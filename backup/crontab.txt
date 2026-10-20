@@ -1,0 +1,11 @@
+# MPARFUM - Programación de resguardos (crontab -e)
+# min hora dia mes dia_semana  comando
+
+# Resguardo completo todos los días a las 03:15 (menor actividad de la tienda)
+15 3 * * *  /opt/mparfum/backup/backup.sh "mongodb://backup:CLAVE@localhost:27017/?authSource=admin" /var/backups/mparfum
+
+# Prueba de restauración semanal (lunes 05:00) en la base mparfum_restore
+0 5 * * 1  /opt/mparfum/backup/restore.sh "$(ls -t /var/backups/mparfum/*/mparfum_*.archive.gz | head -1)" "mongodb://backup:CLAVE@localhost:27017/?authSource=admin" mparfum_restore >> /var/backups/mparfum/restore.log 2>&1
+
+# Exportación del catálogo en JSON legible (domingos 04:00)
+0 4 * * 0  mongoexport --uri="mongodb://backup:CLAVE@localhost:27017/mparfum?authSource=admin" --collection=productos --jsonArray --pretty --out=/var/backups/mparfum/export/productos_$(date +\%F).json

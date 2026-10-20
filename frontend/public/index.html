@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mparfum · Perfumería y cosmética online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Figtree:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="topbar">Envío gratis desde $150.000 · Hasta 6 cuotas sin interés · Retiro gratis en puntos de Mendoza, San Juan, Córdoba y CABA</div>
+  <header class="header">
+    <div class="header-in">
+      <a href="#/" class="logo">Mparfum</a>
+      <form class="buscar" id="form-buscar" role="search">
+        <input id="input-buscar" type="search" placeholder="Buscá perfumes, marcas, notas como vainilla…" aria-label="Buscar">
+        <button type="submit">Buscar</button>
+      </form>
+      <nav class="acciones">
+        <a href="#/seguimiento">Seguir mi envío</a>
+        <a href="#/cuenta" id="link-cuenta">Ingresar</a>
+        <a href="#/carrito" class="link-carrito">Carrito <span id="badge-carrito" class="badge" hidden>0</span></a>
+      </nav>
+    </div>
+    <nav class="menu" id="menu"></nav>
+  </header>
+
+  <main id="app" class="contenido"><p class="cargando">Cargando…</p></main>
+
+  <footer class="footer">
+    <div class="footer-in">
+      <div><span class="logo logo-sm">Mparfum</span><p>Perfumería y cosmética online. Proyecto académico de Diseño de Bases de Datos II (Universidad de Mendoza). Datos y precios de ejemplo.</p></div>
+      <div><b>Tienda</b><a href="#/catalogo?tipo=fragancia">Fragancias</a><a href="#/catalogo?tipo=maquillaje">Maquillaje</a><a href="#/catalogo?tipo=tratamiento">Tratamiento</a><a href="#/catalogo?tipo=set">Sets de regalo</a></div>
+      <div><b>Ayuda</b><a href="#/seguimiento">Seguimiento de envío</a><a href="#/cuenta">Mi cuenta</a><a href="#/admin">Panel de administración</a></div>
+    </div>
+  </footer>
+  <div id="toast" class="toast" hidden></div>
+  <script src="app.js"></script>
+</body>
+</html>
