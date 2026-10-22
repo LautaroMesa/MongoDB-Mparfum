@@ -23,7 +23,7 @@ Para apagarlo, apretá `Ctrl + C` en el CMD.
 ## Páginas
 | Página | Qué hace | Qué usa de MongoDB |
 |--------|----------|--------------------|
-| Inicio | Más vendidos de los últimos 90 días | `$unwind` + `$group` + `$lookup` sobre `pedidos` |
+| Inicio | Banner, campañas, promociones, destacados, tendencias, marcas, secciones, envíos y medios de pago | Colección `pagina_inicio` (script 08): bloques activos y vigentes ordenados por `orden`, con `$lookup` a `productos` y `promociones` |
 | Catálogo | Filtros por rubro, género, marca y precio, y orden | `$facet` (productos y filtros en una sola consulta), índice `ix_categoria_ruta` |
 | Buscador | Busca por nombre, marca o nota olfativa | índice de texto `tx_buscador` (`$text` + `textScore`) |
 | Ficha de producto | Variantes, stock, pirámide olfativa, reseñas, "también compraron" | `reseñas` + `$lookup`, recomendación sobre `items.productoId` |
@@ -32,6 +32,12 @@ Para apagarlo, apretá `Ctrl + C` en el CMD.
 | Mi cuenta | Datos, club, mis pedidos, favoritos | índice `ix_cliente_fecha`, `$addToSet` / `$pull` en `favoritos` |
 | Seguimiento | Línea de tiempo del pedido | índices `ux_numero` y `ux_tracking` |
 | Panel de administración | KPIs, ventas por mes, rubros, top, stock bajo, cola de despacho | agregaciones sobre `pedidos` y `productos` |
+
+## Prueba de carga de la portada
+Simula muchos clientes entrando a la vez y compara dos diseños de la portada: 14 documentos (el del proyecto) y 1 solo documento. Requiere haber corrido el script 08:
+```
+node prueba_carga.js
+```
 
 ## Ingresar
 Es una demostración, así que no hay contraseña: en "Ingresar" elegís una de las cuentas de la colección `clientes` o escribís el email de cualquier cliente.

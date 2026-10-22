@@ -1,0 +1,1543 @@
+
+======================================================================
+C1. Fragancias de mujer florales con alguna presentación entre $150.000 y $300.000
+======================================================================
+{
+  nombre: 'Good Girl',
+  marca: {
+    nombre: 'Carolina Herrera'
+  },
+  atributos: {
+    familiaOlfativa: 'oriental floral'
+  },
+  variantes: [
+    {
+      presentacion: 'Eau de Parfum 30 ml',
+      precio: 127000
+    },
+    {
+      presentacion: 'Eau de Parfum 50 ml',
+      precio: 186300
+    },
+    {
+      presentacion: 'Eau de Parfum 80 ml',
+      precio: 265000
+    }
+  ]
+}
+{
+  nombre: 'Coco Mademoiselle',
+  marca: {
+    nombre: 'Chanel'
+  },
+  atributos: {
+    familiaOlfativa: 'chipre floral'
+  },
+  variantes: [
+    {
+      presentacion: 'Eau de Parfum 35 ml',
+      precio: 186600
+    },
+    {
+      presentacion: 'Eau de Parfum 50 ml',
+      precio: 243800
+    },
+    {
+      presentacion: 'Eau de Parfum 100 ml',
+      precio: 410000
+    }
+  ]
+}
+{
+  nombre: 'N°5',
+  marca: {
+    nombre: 'Chanel'
+  },
+  atributos: {
+    familiaOlfativa: 'floral aldehídica'
+  },
+  variantes: [
+    {
+      presentacion: 'Eau de Parfum 35 ml',
+      precio: 191100
+    },
+    {
+      presentacion: 'Eau de Parfum 50 ml',
+      precio: 249700
+    },
+    {
+      presentacion: 'Eau de Parfum 100 ml',
+      precio: 420000
+    }
+  ]
+}
+{
+  nombre: 'Miss Dior',
+  marca: {
+    nombre: 'Dior'
+  },
+  atributos: {
+    familiaOlfativa: 'floral'
+  },
+  variantes: [
+    {
+      presentacion: 'Eau de Parfum 30 ml',
+      precio: 143900
+    },
+    {
+      presentacion: 'Eau de Parfum 50 ml',
+      precio: 211100
+    },
+    {
+      presentacion: 'Eau de Parfum 100 ml',
+      precio: 355000
+    }
+  ]
+}
+{
+  nombre: "J'adore",
+  marca: {
+    nombre: 'Dior'
+  },
+  atributos: {
+    familiaOlfativa: 'floral'
+  },
+  variantes: [
+    {
+      presentacion: 'Eau de Parfum 30 ml',
+      precio: 148000
+    },
+    {
+      presentacion: 'Eau de Parfum 50 ml',
+      precio: 217000
+    },
+    {
+      presentacion: 'Eau de Parfum 100 ml',
+      precio: 365000
+    }
+  ]
+}
+{
+  nombre: "L'Interdit",
+  marca: {
+    nombre: 'Givenchy'
+  },
+  atributos: {
+    familiaOlfativa: 'floral amaderada'
+  },
+  variantes: [
+    {
+      presentacion: 'Eau de Parfum 35 ml',
+      precio: 145200
+    },
+    {
+      presentacion: 'Eau de Parfum 50 ml',
+      precio: 189800
+    },
+    {
+      presentacion: 'Eau de Parfum 80 ml',
+      precio: 270000
+    }
+  ]
+}
+{
+  nombre: 'Bloom',
+  marca: {
+    nombre: 'Gucci'
+  },
+  atributos: {
+    familiaOlfativa: 'floral'
+  },
+  variantes: [
+    {
+      presentacion: 'Eau de Parfum 30 ml',
+      precio: 103400
+    },
+    {
+      presentacion: 'Eau de Parfum 50 ml',
+      precio: 151600
+    },
+    {
+      presentacion: 'Eau de Parfum 100 ml',
+      precio: 255000
+    }
+  ]
+}
+{
+  nombre: 'Fame',
+  marca: {
+    nombre: 'Rabanne'
+  },
+  atributos: {
+    familiaOlfativa: 'floral amaderada'
+  },
+  variantes: [
+    {
+      presentacion: 'Eau de Parfum 30 ml',
+      precio: 107800
+    },
+    {
+      presentacion: 'Eau de Parfum 50 ml',
+      precio: 158200
+    },
+    {
+      presentacion: 'Eau de Parfum 80 ml',
+      precio: 225000
+    }
+  ]
+}
+{
+  nombre: 'Libre',
+  marca: {
+    nombre: 'Yves Saint Laurent'
+  },
+  atributos: {
+    familiaOlfativa: 'floral lavanda'
+  },
+  variantes: [
+    {
+      presentacion: 'Eau de Parfum 30 ml',
+      precio: 133800
+    },
+    {
+      presentacion: 'Eau de Parfum 50 ml',
+      precio: 196300
+    },
+    {
+      presentacion: 'Eau de Parfum 90 ml',
+      precio: 305000
+    }
+  ]
+}
+
+======================================================================
+C2. Fragancias de hombre ordenadas por 'precio desde' (variante más barata)
+======================================================================
+{
+  nombre: 'Eros',
+  marca: 'Versace',
+  concentracion: 'Eau de Toilette',
+  precioDesde: 61900
+}
+{
+  nombre: 'Acqua di Giò',
+  marca: 'Giorgio Armani',
+  concentracion: 'Eau de Toilette',
+  precioDesde: 81300
+}
+{
+  nombre: '1 Million',
+  marca: 'Rabanne',
+  concentracion: 'Eau de Toilette',
+  precioDesde: 83100
+}
+{
+  nombre: 'Bad Boy',
+  marca: 'Carolina Herrera',
+  concentracion: 'Eau de Toilette',
+  precioDesde: 94300
+}
+{
+  nombre: 'Le Male',
+  marca: 'Jean Paul Gaultier',
+  concentracion: 'Eau de Toilette',
+  precioDesde: 98200
+}
+{
+  nombre: 'The Most Wanted',
+  marca: 'Azzaro',
+  concentracion: 'Eau de Parfum',
+  precioDesde: 110000
+}
+{
+  nombre: 'Sauvage',
+  marca: 'Dior',
+  concentracion: 'Eau de Toilette',
+  precioDesde: 139800
+}
+{
+  nombre: 'Y',
+  marca: 'Yves Saint Laurent',
+  concentracion: 'Eau de Parfum',
+  precioDesde: 177300
+}
+{
+  nombre: 'Bleu de Chanel',
+  marca: 'Chanel',
+  concentracion: 'Eau de Parfum',
+  precioDesde: 188600
+}
+
+======================================================================
+C3. Maquillaje: cantidad de productos y tonos por subcategoría (usa la ruta materializada)
+======================================================================
+{
+  productos: 2,
+  tonos: 7,
+  marcas: [
+    'Estée Lauder',
+    'Dior'
+  ],
+  categoria: 'Bases'
+}
+{
+  productos: 2,
+  tonos: 6,
+  marcas: [
+    'Chanel',
+    'M·A·C'
+  ],
+  categoria: 'Labiales'
+}
+{
+  productos: 1,
+  tonos: 2,
+  marcas: [
+    'Yves Saint Laurent'
+  ],
+  categoria: 'Correctores'
+}
+{
+  productos: 1,
+  tonos: 1,
+  marcas: [
+    'Lancôme'
+  ],
+  categoria: 'Máscaras de pestañas'
+}
+{
+  productos: 1,
+  tonos: 2,
+  marcas: [
+    'NARS'
+  ],
+  categoria: 'Rubores'
+}
+{
+  productos: 1,
+  tonos: 1,
+  marcas: [
+    'Urban Decay'
+  ],
+  categoria: 'Sombras y paletas'
+}
+{
+  productos: 1,
+  tonos: 2,
+  marcas: [
+    'Chanel'
+  ],
+  categoria: 'Uñas'
+}
+
+======================================================================
+C4. Buscador de la tienda: 'vainilla' (índice de texto con relevancia)
+======================================================================
+{
+  nombre: 'Black Opium',
+  tipo: 'fragancia',
+  marca: {
+    nombre: 'Yves Saint Laurent'
+  },
+  relevancia: 5.588235294117647
+}
+{
+  nombre: 'Miss Dior',
+  tipo: 'fragancia',
+  marca: {
+    nombre: 'Dior'
+  },
+  relevancia: 1.5454545454545454
+}
+{
+  nombre: 'Fame',
+  tipo: 'fragancia',
+  marca: {
+    nombre: 'Rabanne'
+  },
+  relevancia: 1.5416666666666665
+}
+{
+  nombre: 'Sì',
+  tipo: 'fragancia',
+  marca: {
+    nombre: 'Giorgio Armani'
+  },
+  relevancia: 1.5384615384615383
+}
+{
+  nombre: "J'adore",
+  tipo: 'fragancia',
+  marca: {
+    nombre: 'Dior'
+  },
+  relevancia: 1.5384615384615383
+}
+{
+  nombre: 'Coco Mademoiselle',
+  tipo: 'fragancia',
+  marca: {
+    nombre: 'Chanel'
+  },
+  relevancia: 1.5384615384615383
+}
+{
+  nombre: 'N°5',
+  tipo: 'fragancia',
+  marca: {
+    nombre: 'Chanel'
+  },
+  relevancia: 1.5357142857142856
+}
+{
+  nombre: 'La Vie Est Belle',
+  tipo: 'fragancia',
+  marca: {
+    nombre: 'Lancôme'
+  },
+  relevancia: 1.5357142857142856
+}
+
+======================================================================
+C5. 'Mis pedidos': últimos 5 pedidos del cliente con más compras
+======================================================================
+{
+  numero: 109171,
+  fecha: ISODate('2026-10-15T17:29:56.925Z'),
+  canal: 'web',
+  total: 352000,
+  estado: 'entregado',
+  cantItems: 1
+}
+{
+  numero: 114242,
+  fecha: ISODate('2026-10-12T18:39:35.826Z'),
+  canal: 'web',
+  total: 378900,
+  estado: 'entregado',
+  cantItems: 2
+}
+{
+  numero: 119123,
+  fecha: ISODate('2026-10-08T19:46:52.449Z'),
+  canal: 'web',
+  total: 51500,
+  estado: 'entregado',
+  cantItems: 1
+}
+{
+  numero: 101605,
+  fecha: ISODate('2026-10-08T13:37:02.896Z'),
+  canal: 'web',
+  total: 139800,
+  estado: 'entregado',
+  cantItems: 1
+}
+{
+  numero: 116114,
+  fecha: ISODate('2026-10-07T21:33:04.377Z'),
+  canal: 'web',
+  total: 282600,
+  estado: 'entregado',
+  cantItems: 3
+}
+
+======================================================================
+C6. Ventas mensuales de 2026 por canal (excluye cancelados)
+======================================================================
+{
+  pedidos: 783,
+  total: 220251500,
+  mes: '2026-01',
+  porCanal: {
+    app: 64598500,
+    web: 155653000
+  }
+}
+{
+  pedidos: 601,
+  total: 154264900,
+  mes: '2026-02',
+  porCanal: {
+    app: 39864300,
+    web: 114400600
+  }
+}
+{
+  pedidos: 663,
+  total: 189231100,
+  mes: '2026-03',
+  porCanal: {
+    app: 52503700,
+    web: 136727400
+  }
+}
+{
+  pedidos: 624,
+  total: 162322000,
+  mes: '2026-04',
+  porCanal: {
+    web: 120107400,
+    app: 42214600
+  }
+}
+{
+  pedidos: 785,
+  total: 218100500,
+  mes: '2026-05',
+  porCanal: {
+    app: 55824900,
+    web: 162275600
+  }
+}
+{
+  pedidos: 1138,
+  total: 327098900,
+  mes: '2026-06',
+  porCanal: {
+    web: 242216400,
+    app: 84882500
+  }
+}
+{
+  pedidos: 904,
+  total: 245802300,
+  mes: '2026-07',
+  porCanal: {
+    web: 174875200,
+    app: 70927100
+  }
+}
+{
+  pedidos: 772,
+  total: 207243400,
+  mes: '2026-08',
+  porCanal: {
+    web: 148740500,
+    app: 58502900
+  }
+}
+{
+  pedidos: 759,
+  total: 193102400,
+  mes: '2026-09',
+  porCanal: {
+    web: 143267300,
+    app: 49835100
+  }
+}
+{
+  pedidos: 870,
+  total: 237532900,
+  mes: '2026-10',
+  porCanal: {
+    app: 59394400,
+    web: 178138500
+  }
+}
+
+======================================================================
+C7. Top 10 productos por facturación (últimos 12 meses)
+======================================================================
+{
+  unidades: 1149,
+  facturacion: 268503500,
+  producto: 'Sauvage',
+  marca: 'Dior',
+  tipo: 'fragancia'
+}
+{
+  unidades: 693,
+  facturacion: 193702800,
+  producto: 'N°5',
+  marca: 'Chanel',
+  tipo: 'fragancia'
+}
+{
+  unidades: 964,
+  facturacion: 184084800,
+  producto: 'Good Girl',
+  marca: 'Carolina Herrera',
+  tipo: 'fragancia'
+}
+{
+  unidades: 899,
+  facturacion: 179283200,
+  producto: 'La Vie Est Belle',
+  marca: 'Lancôme',
+  tipo: 'fragancia'
+}
+{
+  unidades: 342,
+  facturacion: 161031200,
+  producto: 'Oud Wood',
+  marca: 'Tom Ford',
+  tipo: 'fragancia'
+}
+{
+  unidades: 691,
+  facturacion: 142015000,
+  producto: 'Black Opium',
+  marca: 'Yves Saint Laurent',
+  tipo: 'fragancia'
+}
+{
+  unidades: 769,
+  facturacion: 117128000,
+  producto: '1 Million',
+  marca: 'Rabanne',
+  tipo: 'fragancia'
+}
+{
+  unidades: 357,
+  facturacion: 111809200,
+  producto: 'Bleu de Chanel',
+  marca: 'Chanel',
+  tipo: 'fragancia'
+}
+{
+  unidades: 595,
+  facturacion: 87990400,
+  producto: 'Acqua di Giò',
+  marca: 'Giorgio Armani',
+  tipo: 'fragancia'
+}
+{
+  unidades: 242,
+  facturacion: 85184000,
+  producto: 'Set Sauvage EDT 100 ml + Gel de Ducha',
+  marca: 'Dior',
+  tipo: 'set'
+}
+
+======================================================================
+C8. Mejor puntuados (activos, al menos 50 reseñas) - usa el índice parcial
+======================================================================
+{
+  nombre: 'Effaclar Gel Limpiador',
+  marca: {
+    nombre: 'La Roche-Posay'
+  },
+  rating: {
+    promedio: 4.42,
+    cantidad: 64
+  }
+}
+{
+  nombre: 'Moisture Surge 100H Crema',
+  marca: {
+    nombre: 'Clinique'
+  },
+  rating: {
+    promedio: 4.4,
+    cantidad: 62
+  }
+}
+{
+  nombre: 'Rouge Coco Labial',
+  marca: {
+    nombre: 'Chanel'
+  },
+  rating: {
+    promedio: 4.31,
+    cantidad: 68
+  }
+}
+{
+  nombre: 'Miss Dior',
+  marca: {
+    nombre: 'Dior'
+  },
+  rating: {
+    promedio: 4.28,
+    cantidad: 67
+  }
+}
+{
+  nombre: 'Sauvage',
+  marca: {
+    nombre: 'Dior'
+  },
+  rating: {
+    promedio: 4.23,
+    cantidad: 188
+  }
+}
+
+======================================================================
+C9. Participación de cada rubro en la facturación 2026 (perfumes vs cosméticos)
+======================================================================
+{
+  facturacion: 1649696400,
+  unidades: 8081,
+  rubro: 'fragancia',
+  porcentaje: 73.6
+}
+{
+  facturacion: 172831000,
+  unidades: 2514,
+  rubro: 'maquillaje',
+  porcentaje: 7.7
+}
+{
+  facturacion: 160497000,
+  unidades: 1951,
+  rubro: 'tratamiento',
+  porcentaje: 7.2
+}
+{
+  facturacion: 145826000,
+  unidades: 498,
+  rubro: 'set',
+  porcentaje: 6.5
+}
+{
+  facturacion: 79752000,
+  unidades: 981,
+  rubro: 'cuerpo',
+  porcentaje: 3.6
+}
+{
+  facturacion: 31413000,
+  unidades: 462,
+  rubro: 'cabello',
+  porcentaje: 1.4
+}
+
+======================================================================
+C10. Efectividad de cada promoción
+======================================================================
+{
+  pedidos: 8244,
+  descuentoOtorgado: 233659000,
+  codigo: 'BIENVENIDA10',
+  descripcion: '10% off en compras por la web o la app',
+  ticketPromedio: 256784
+}
+{
+  pedidos: 76,
+  descuentoOtorgado: 3015300,
+  codigo: 'MADRE2026',
+  descripcion: 'Día de la Madre: 15% off en fragancias mujer y sets',
+  ticketPromedio: 319124
+}
+{
+  pedidos: 63,
+  descuentoOtorgado: 2282900,
+  codigo: 'PADRE2026',
+  descripcion: 'Día del Padre: 15% off en fragancias hombre',
+  ticketPromedio: 384783
+}
+{
+  pedidos: 25,
+  descuentoOtorgado: 1300300,
+  codigo: 'CYBER2025',
+  descripcion: 'CyberMonday: 20% off en todo el sitio',
+  ticketPromedio: 210084
+}
+
+======================================================================
+C11. Cola de despacho del Depósito Cuyo: pedidos pagados o en preparación (más antiguos primero)
+======================================================================
+{
+  numero: 114227,
+  cliente: {
+    nombre: 'Sofía García'
+  },
+  fecha: ISODate('2026-10-09T13:07:02.906Z'),
+  envio: {
+    tipo: 'domicilio',
+    direccion: {
+      ciudad: 'Mendoza'
+    }
+  },
+  estado: 'pagado'
+}
+{
+  numero: 102800,
+  cliente: {
+    nombre: 'Camila Fernández'
+  },
+  fecha: ISODate('2026-10-09T14:06:25.739Z'),
+  envio: {
+    tipo: 'domicilio',
+    direccion: {
+      ciudad: 'Guaymallén'
+    }
+  },
+  estado: 'pagado'
+}
+{
+  numero: 110188,
+  cliente: {
+    nombre: 'Mateo Pérez'
+  },
+  fecha: ISODate('2026-10-09T14:11:55.083Z'),
+  envio: {
+    tipo: 'domicilio',
+    direccion: {
+      ciudad: 'Guaymallén'
+    }
+  },
+  estado: 'preparando'
+}
+{
+  numero: 118722,
+  cliente: {
+    nombre: 'Matías Aguirre'
+  },
+  fecha: ISODate('2026-10-09T14:35:34.947Z'),
+  envio: {
+    tipo: 'domicilio',
+    direccion: {
+      ciudad: 'Mendoza'
+    }
+  },
+  estado: 'pagado'
+}
+{
+  numero: 115353,
+  cliente: {
+    nombre: 'Milagros Morales'
+  },
+  fecha: ISODate('2026-10-09T14:54:58.836Z'),
+  envio: {
+    tipo: 'domicilio',
+    direccion: {
+      ciudad: 'San Rafael'
+    }
+  },
+  estado: 'pagado'
+}
+{
+  numero: 113289,
+  cliente: {
+    nombre: 'Franco Martínez'
+  },
+  fecha: ISODate('2026-10-09T15:42:40.106Z'),
+  envio: {
+    tipo: 'domicilio',
+    direccion: {
+      ciudad: 'San Luis'
+    }
+  },
+  estado: 'preparando'
+}
+{
+  numero: 117313,
+  cliente: {
+    nombre: 'Matías García'
+  },
+  fecha: ISODate('2026-10-09T18:00:33.848Z'),
+  envio: {
+    tipo: 'retiro',
+    puntoRetiro: 'PR-GODOY-CRUZ'
+  },
+  estado: 'preparando'
+}
+{
+  numero: 118412,
+  cliente: {
+    nombre: 'Agustina González'
+  },
+  fecha: ISODate('2026-10-09T18:25:00.923Z'),
+  envio: {
+    tipo: 'domicilio',
+    direccion: {
+      ciudad: 'Guaymallén'
+    }
+  },
+  estado: 'preparando'
+}
+{
+  numero: 110421,
+  cliente: {
+    nombre: 'Paula Herrera'
+  },
+  fecha: ISODate('2026-10-09T19:04:43.698Z'),
+  envio: {
+    tipo: 'domicilio',
+    direccion: {
+      ciudad: 'Luján de Cuyo'
+    }
+  },
+  estado: 'preparando'
+}
+{
+  numero: 111531,
+  cliente: {
+    nombre: 'Martina Pérez'
+  },
+  fecha: ISODate('2026-10-09T19:38:21.657Z'),
+  envio: {
+    tipo: 'domicilio',
+    direccion: {
+      ciudad: 'San Luis'
+    }
+  },
+  estado: 'preparando'
+}
+
+======================================================================
+C12. Recomendación: quienes compraron 'Sauvage' también compraron...
+======================================================================
+{
+  vecesJuntos: 111,
+  producto: 'La Vie Est Belle',
+  marca: 'Lancôme'
+}
+{
+  vecesJuntos: 106,
+  producto: 'Good Girl',
+  marca: 'Carolina Herrera'
+}
+{
+  vecesJuntos: 89,
+  producto: 'Black Opium',
+  marca: 'Yves Saint Laurent'
+}
+{
+  vecesJuntos: 80,
+  producto: 'Matte Lipstick',
+  marca: 'M·A·C'
+}
+{
+  vecesJuntos: 79,
+  producto: '1 Million',
+  marca: 'Rabanne'
+}
+
+======================================================================
+C13. Checkout: puntos de retiro más cercanos a la ubicación del cliente (Universidad de Mendoza)
+======================================================================
+{
+  nombre: 'Punto de retiro Mendoza Centro',
+  direccion: {
+    calle: 'Peatonal Sarmiento 150',
+    ciudad: 'Mendoza'
+  },
+  horario: 'Lun a Sáb 9 a 20 h',
+  distanciaKm: 1.42
+}
+{
+  nombre: 'Punto de retiro Guaymallén',
+  direccion: {
+    calle: 'Av. Acceso Este 3280',
+    ciudad: 'Guaymallén'
+  },
+  horario: 'Todos los días 10 a 22 h',
+  distanciaKm: 3.65
+}
+{
+  nombre: 'Punto de retiro Palmares',
+  direccion: {
+    calle: 'Panamericana 2650',
+    ciudad: 'Godoy Cruz'
+  },
+  horario: 'Todos los días 10 a 22 h',
+  distanciaKm: 9.2
+}
+
+======================================================================
+C14. Reposición: variantes con 3 unidades o menos en cada depósito
+======================================================================
+{
+  _id: 'DEP-BA',
+  cantidad: 6,
+  primeros: [
+    {
+      producto: 'Coco Mademoiselle',
+      presentacion: 'Eau de Parfum 100 ml',
+      stock: 0
+    },
+    {
+      producto: "J'adore",
+      presentacion: 'Eau de Parfum 50 ml',
+      stock: 1
+    },
+    {
+      producto: 'Sauvage',
+      presentacion: 'Eau de Toilette 100 ml',
+      stock: 3
+    },
+    {
+      producto: 'The Most Wanted',
+      presentacion: 'Eau de Parfum 50 ml',
+      stock: 0
+    }
+  ]
+}
+{
+  _id: 'DEP-CBA',
+  cantidad: 4,
+  primeros: [
+    {
+      producto: 'Miss Dior',
+      presentacion: 'Eau de Parfum 100 ml',
+      stock: 0
+    },
+    {
+      producto: 'Sì',
+      presentacion: 'Eau de Parfum 100 ml',
+      stock: 1
+    },
+    {
+      producto: 'Bleu de Chanel',
+      presentacion: 'Eau de Parfum 50 ml',
+      stock: 1
+    },
+    {
+      producto: 'Double Wear Stay-in-Place Base',
+      presentacion: '30 ml · 3W1 Tawny',
+      stock: 1
+    }
+  ]
+}
+{
+  _id: 'DEP-MZA',
+  cantidad: 8,
+  primeros: [
+    {
+      producto: "L'Interdit",
+      presentacion: 'Eau de Parfum 50 ml',
+      stock: 2
+    },
+    {
+      producto: 'Sì',
+      presentacion: 'Eau de Parfum 50 ml',
+      stock: 3
+    },
+    {
+      producto: 'Bleu de Chanel',
+      presentacion: 'Eau de Parfum 50 ml',
+      stock: 2
+    },
+    {
+      producto: 'The Most Wanted',
+      presentacion: 'Eau de Parfum 100 ml',
+      stock: 0
+    }
+  ]
+}
+
+======================================================================
+C15. Árbol de categorías: descendientes de 'Maquillaje' ($graphLookup)
+======================================================================
+{
+  nombre: 'Maquillaje',
+  descendientes: [
+    {
+      nombre: 'Rostro',
+      profundidad: Long('0'),
+      orden: 6
+    },
+    {
+      nombre: 'Bases',
+      profundidad: Long('1'),
+      orden: 7
+    },
+    {
+      nombre: 'Correctores',
+      profundidad: Long('1'),
+      orden: 8
+    },
+    {
+      nombre: 'Rubores',
+      profundidad: Long('1'),
+      orden: 9
+    },
+    {
+      nombre: 'Ojos',
+      profundidad: Long('0'),
+      orden: 10
+    },
+    {
+      nombre: 'Máscaras de pestañas',
+      profundidad: Long('1'),
+      orden: 11
+    },
+    {
+      nombre: 'Sombras y paletas',
+      profundidad: Long('1'),
+      orden: 12
+    },
+    {
+      nombre: 'Labios',
+      profundidad: Long('0'),
+      orden: 13
+    },
+    {
+      nombre: 'Labiales',
+      profundidad: Long('1'),
+      orden: 14
+    },
+    {
+      nombre: 'Uñas',
+      profundidad: Long('0'),
+      orden: 15
+    }
+  ]
+}
+
+======================================================================
+C16. Notas olfativas más frecuentes en fragancias de mujer
+======================================================================
+{
+  _id: 'jazmín',
+  fragancias: 9
+}
+{
+  _id: 'vainilla',
+  fragancias: 9
+}
+{
+  _id: 'bergamota',
+  fragancias: 5
+}
+{
+  _id: 'pachulí',
+  fragancias: 5
+}
+{
+  _id: 'almizcle',
+  fragancias: 4
+}
+{
+  _id: 'azahar',
+  fragancias: 4
+}
+{
+  _id: 'pera',
+  fragancias: 4
+}
+{
+  _id: 'cedro',
+  fragancias: 3
+}
+
+======================================================================
+C17. Segmentación de clientes por gasto acumulado ($bucket)
+======================================================================
+{
+  clientes: 48,
+  gastoTotal: 13990200,
+  rango: 0,
+  pedidosPromedio: 2.2
+}
+{
+  clientes: 451,
+  gastoTotal: 494916400,
+  rango: 500000,
+  pedidosPromedio: 5.2
+}
+{
+  clientes: 907,
+  gastoTotal: 1999740500,
+  rango: 1500000,
+  pedidosPromedio: 8.3
+}
+{
+  clientes: 517,
+  gastoTotal: 2040682100,
+  rango: 3000000,
+  pedidosPromedio: 13.3
+}
+{
+  clientes: 76,
+  gastoTotal: 676696100,
+  rango: '6M o más',
+  pedidosPromedio: 31
+}
+
+======================================================================
+C18. Filtros laterales del catálogo con $facet (una sola consulta)
+======================================================================
+{
+  porRubro: [
+    {
+      _id: 'fragancia',
+      count: 24
+    },
+    {
+      _id: 'maquillaje',
+      count: 9
+    },
+    {
+      _id: 'tratamiento',
+      count: 7
+    },
+    {
+      _id: 'cuerpo',
+      count: 4
+    },
+    {
+      _id: 'set',
+      count: 3
+    },
+    {
+      _id: 'cabello',
+      count: 2
+    }
+  ],
+  porMarca: [
+    {
+      _id: 'Chanel',
+      count: 6
+    },
+    {
+      _id: 'Dior',
+      count: 5
+    },
+    {
+      _id: 'Lancôme',
+      count: 4
+    },
+    {
+      _id: 'Yves Saint Laurent',
+      count: 4
+    },
+    {
+      _id: 'Carolina Herrera',
+      count: 3
+    }
+  ],
+  porPrecio: [
+    {
+      _id: 0,
+      productos: 8
+    },
+    {
+      _id: 50000,
+      productos: 15
+    },
+    {
+      _id: 100000,
+      productos: 22
+    },
+    {
+      _id: 200000,
+      productos: 4
+    }
+  ]
+}
+
+======================================================================
+C19. Promociones vigentes al 15/10/2026 aplicables a 'Good Girl' comprado por la web
+======================================================================
+{
+  codigo: 'BIENVENIDA10',
+  descripcion: '10% off en compras por la web o la app',
+  tipo: 'porcentaje',
+  valor: 10
+}
+{
+  codigo: '6CUOTAS',
+  descripcion: '6 cuotas sin interés con tarjetas bancarias',
+  tipo: 'cuotas_sin_interes',
+  valor: 6
+}
+{
+  codigo: 'MADRE2026',
+  descripcion: 'Día de la Madre: 15% off en fragancias mujer y sets',
+  tipo: 'porcentaje',
+  valor: 15
+}
+
+======================================================================
+C20. Ticket promedio por provincia y nivel del club ($lookup a clientes)
+======================================================================
+{
+  pedidos: 413,
+  provincia: 'Buenos Aires',
+  nivel: 'gold',
+  ticketPromedio: 303223
+}
+{
+  pedidos: 468,
+  provincia: 'Buenos Aires',
+  nivel: 'classic',
+  ticketPromedio: 252274
+}
+{
+  pedidos: 106,
+  provincia: 'Córdoba',
+  nivel: 'black',
+  ticketPromedio: 295361
+}
+{
+  pedidos: 287,
+  provincia: 'Córdoba',
+  nivel: 'gold',
+  ticketPromedio: 291111
+}
+{
+  pedidos: 393,
+  provincia: 'Córdoba',
+  nivel: 'classic',
+  ticketPromedio: 242120
+}
+{
+  pedidos: 2170,
+  provincia: 'Mendoza',
+  nivel: 'gold',
+  ticketPromedio: 297800
+}
+{
+  pedidos: 129,
+  provincia: 'Mendoza',
+  nivel: 'black',
+  ticketPromedio: 275409
+}
+{
+  pedidos: 2566,
+  provincia: 'Mendoza',
+  nivel: 'classic',
+  ticketPromedio: 255355
+}
+{
+  pedidos: 120,
+  provincia: 'Neuquén',
+  nivel: 'classic',
+  ticketPromedio: 238184
+}
+{
+  pedidos: 251,
+  provincia: 'San Juan',
+  nivel: 'gold',
+  ticketPromedio: 297757
+}
+{
+  pedidos: 304,
+  provincia: 'San Juan',
+  nivel: 'classic',
+  ticketPromedio: 243202
+}
+{
+  pedidos: 146,
+  provincia: 'San Luis',
+  nivel: 'gold',
+  ticketPromedio: 290408
+}
+{
+  pedidos: 134,
+  provincia: 'San Luis',
+  nivel: 'classic',
+  ticketPromedio: 243766
+}
+{
+  pedidos: 141,
+  provincia: 'Santa Fe',
+  nivel: 'gold',
+  ticketPromedio: 263184
+}
+{
+  pedidos: 147,
+  provincia: 'Santa Fe',
+  nivel: 'classic',
+  ticketPromedio: 250910
+}
+
+======================================================================
+C21. Lista de deseos: productos más guardados en favoritos y cuántos se vendieron
+======================================================================
+{
+  clientesQueLoDesean: 222,
+  producto: 'Sauvage',
+  marca: 'Dior',
+  pedidos2026: 730
+}
+{
+  clientesQueLoDesean: 177,
+  producto: 'La Vie Est Belle',
+  marca: 'Lancôme',
+  pedidos2026: 578
+}
+{
+  clientesQueLoDesean: 171,
+  producto: '1 Million',
+  marca: 'Rabanne',
+  pedidos2026: 522
+}
+{
+  clientesQueLoDesean: 156,
+  producto: 'Good Girl',
+  marca: 'Carolina Herrera',
+  pedidos2026: 652
+}
+{
+  clientesQueLoDesean: 146,
+  producto: 'Matte Lipstick',
+  marca: 'M·A·C',
+  pedidos2026: 516
+}
+
+======================================================================
+C22. Carritos abandonados (más de 3 días sin actividad): monto a recuperar con un mail de recordatorio
+======================================================================
+{
+  resumen: [
+    {
+      carritos: 169,
+      montoTotal: 51259600,
+      promedio: 303311
+    }
+  ],
+  masAbandonados: [
+    {
+      _id: 'Anthelios UVMune 400 Fluido FPS 50+ - 50 ml',
+      veces: 10
+    },
+    {
+      _id: 'La Vie Est Belle - Eau de Parfum 50 ml',
+      veces: 10
+    },
+    {
+      _id: 'Moisture Surge 100H Crema - 50 ml',
+      veces: 8
+    }
+  ],
+  paraContactar: [
+    {
+      actualizado: ISODate('2026-10-03T14:23:52.874Z'),
+      montoCarrito: 1249800,
+      email: 'antonella.aguirre946@hotmail.com'
+    },
+    {
+      actualizado: ISODate('2026-10-14T23:23:52.876Z'),
+      montoCarrito: 924700,
+      email: 'mateo.aguirre203@outlook.com'
+    },
+    {
+      actualizado: ISODate('2026-10-05T07:23:52.877Z'),
+      montoCarrito: 833900,
+      email: 'micaela.diaz775@hotmail.com'
+    }
+  ]
+}
+
+======================================================================
+C23. Logística: horas promedio entre el pago y la entrega por depósito y empresa de envío
+======================================================================
+{
+  envios: 211,
+  deposito: 'DEP-BA',
+  empresa: 'Andreani',
+  horasPromedio: 46.1
+}
+{
+  envios: 197,
+  deposito: 'DEP-BA',
+  empresa: 'Correo Argentino',
+  horasPromedio: 46.1
+}
+{
+  envios: 203,
+  deposito: 'DEP-BA',
+  empresa: 'OCA',
+  horasPromedio: 46.8
+}
+{
+  envios: 247,
+  deposito: 'DEP-CBA',
+  empresa: 'OCA',
+  horasPromedio: 45.6
+}
+{
+  envios: 262,
+  deposito: 'DEP-CBA',
+  empresa: 'Correo Argentino',
+  horasPromedio: 46.1
+}
+{
+  envios: 262,
+  deposito: 'DEP-CBA',
+  empresa: 'Andreani',
+  horasPromedio: 48.4
+}
+{
+  envios: 1426,
+  deposito: 'DEP-MZA',
+  empresa: 'OCA',
+  horasPromedio: 46.2
+}
+{
+  envios: 1282,
+  deposito: 'DEP-MZA',
+  empresa: 'Correo Argentino',
+  horasPromedio: 46.8
+}
+{
+  envios: 1403,
+  deposito: 'DEP-MZA',
+  empresa: 'Andreani',
+  horasPromedio: 47.1
+}
+
+======================================================================
+C24. Seguimiento de envío: el cliente consulta su pedido por código de tracking
+======================================================================
+{
+  numero: 100003,
+  envio: {
+    empresa: 'Andreani',
+    direccion: {
+      ciudad: 'San Juan'
+    },
+    tracking: 'AND0000100003'
+  },
+  estado: 'entregado',
+  historialEstados: [
+    {
+      estado: 'pendiente',
+      fecha: ISODate('2026-07-16T23:25:35.471Z')
+    },
+    {
+      estado: 'pagado',
+      fecha: ISODate('2026-07-17T03:25:35.471Z')
+    },
+    {
+      estado: 'preparando',
+      fecha: ISODate('2026-07-17T05:25:35.471Z')
+    },
+    {
+      estado: 'enviado',
+      fecha: ISODate('2026-07-18T09:25:35.471Z')
+    },
+    {
+      estado: 'entregado',
+      fecha: ISODate('2026-07-19T15:25:35.471Z')
+    }
+  ]
+}
+
+======================================================================
+C25. Confirmación de compra: reservar stock de una variante en el depósito con arrayFilters
+======================================================================
+{
+  sku: 'FR-1022',
+  stockAntes: 84,
+  modificados: 1,
+  stockDespues: 83
+}
+
+======================================================================
+C26. Aumento de precios del 8% en fragancias de Puig (Rabanne, Carolina Herrera, JPG)
+======================================================================
+{
+  productosActualizados: 5
+}
+
+======================================================================
+C27. Recalcular el rating de todos los productos (patrón computed, $merge)
+======================================================================
+Ratings recalculados.
+
+======================================================================
+C28. El validador rechaza un producto mal cargado
+======================================================================
+Rechazado (código 121): Document failed validation
+
+======================================================================
+C29. Transacción multi-documento: alta de pedido web + descuento de stock
+======================================================================
+El servidor es standalone: iniciar mongod con --replSet rs0 y rs.initiate() para ejecutar la transacción.

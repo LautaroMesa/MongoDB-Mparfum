@@ -60,6 +60,32 @@ Con los campos de igualdad primero y el de orden después, MongoDB recorre únic
 
 El índice de texto examina sólo los 13 documentos que coinciden con "vainilla". Un `$regex` sin anclar no puede usar un índice B-tree y recorre toda la colección. Además, `$text` ordena los resultados por relevancia (`textScore`) y aplica *stemming* en español.
 
+## Portada: ¿14 documentos o uno solo? (`pagina_inicio`)
+
+Se evaluó si convenía guardar la portada en **14 documentos** (uno por bloque) o en **un solo documento** con los 14 bloques adentro. En los dos casos, para mostrar la página también hay que buscar los productos con su precio y stock al día.
+
+**Prueba de carga** (`frontend/prueba_carga.js`): 3.000 visitas a la portada con 1, 10, 50 y 100 clientes simultáneos. "Espera p95" es lo máximo que espera el 95 % de los clientes.
+
+| Simultáneos | A) 14 documentos | B) 1 documento |
+|---:|---|---|
+| 1 | 408 portadas/s · p95 3,2 ms | 474 portadas/s · p95 2,7 ms |
+| 10 | 1.076 portadas/s · p95 16,5 ms | 1.270 portadas/s · p95 13,3 ms |
+| 50 | 1.043 portadas/s · p95 67,7 ms | 1.049 portadas/s · p95 75,6 ms |
+| 100 | 886 portadas/s · p95 148,8 ms | 924 portadas/s · p95 137,7 ms |
+
+**Carga masiva (escritura) de la portada completa**, promedio de 300 cargas: `insertMany` de 14 documentos 2,3 ms; `insertOne` de 1 documento 1,7 ms.
+
+**100 clientes entrando mientras se actualiza un bloque cada 20 ms**: A 831 portadas/s (p95 149 ms); B 925 portadas/s (p95 141 ms). Las actualizaciones no frenan a los clientes en ninguno de los dos diseños.
+
+**Decisión: se mantienen los 14 documentos.**
+
+- La diferencia de velocidad es chica: con 100 clientes a la vez, el documento único atiende apenas un 4 % más de portadas por segundo, y la espera del 95 % de los clientes baja de 149 a 138 ms. Lo que más tarda en los dos casos es buscar los productos, no leer los bloques.
+- Los 14 documentos permiten activar, ocultar, reordenar o programar por fechas **un bloque sin tocar los demás**.
+- Con un solo documento, si dos personas editan la portada al mismo tiempo se pueden pisar los cambios, y cada modificación reescribe la portada entera.
+- La portada se arma en una agregación (bloques vigentes + `$lookup` a productos) en unos 3,8 ms, muy por debajo de lo que un cliente puede percibir.
+
+Las pruebas se hicieron con el cliente y el servidor en la misma máquina (4 núcleos). En otra computadora los números absolutos cambian, pero la relación entre los diseños se mantiene.
+
 ## Conclusiones
 
 - Las consultas sobre `pedidos`, la colección que más crece en un e-commerce, pasan de examinar el 100% de los documentos a examinar sólo los que devuelven.

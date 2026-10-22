@@ -9,13 +9,16 @@ Mparfum es una tienda online (sitio web y app) que vende **perfumes y cosmética
 | Consigna del enunciado | Dónde está |
 |------------------------|------------|
 | Planteo de necesidades (requisitos) y solución propuesta | `docs/01_requisitos.md` |
-| Modelado de la estructura de datos | `docs/02_modelo_de_datos.md` |
+| Modelado de la estructura de datos | `docs/02_modelo_de_datos.md`, `docs/06_diccionario_de_datos.md` |
 | Implementación del modelo en MongoDB | `scripts/00_crear_colecciones.js` (colecciones y validadores `$jsonSchema`) |
 | Carga de datos | `scripts/01_carga_datos.js` |
 | Consultas avanzadas | `scripts/03_consultas.js` (29 consultas: agregaciones, `$lookup`, `$facet`, `$bucket`, `$graphLookup`, `$geoNear`, `$text`, `$setWindowFields`, `$merge`, `arrayFilters` y transacciones) |
 | Medición del desempeño (indexación) | `scripts/02_indices.js`, `scripts/04_desempeño_indices.js`, `docs/04_indices_y_desempeño.md` |
 | Políticas de resguardo | `backup/`, `docs/03_politica_resguardo.md` |
 | Extra: vistas, roles y usuarios | `scripts/05_vistas_y_seguridad.js` |
+| Series temporales (clase) | `scripts/06_series_temporales.js` (colección `eventos_web`) |
+| Cada tema de la clase aplicado a Mparfum | `scripts/07_consultas_clase.js`, `docs/05_guia_presentacion.md` |
+| Portada de la tienda (colección principal que ve el cliente) | `scripts/08_pagina_inicio.js` (colección `pagina_inicio`) |
 | Extra: tienda web conectada a la base | `frontend/` (ver `frontend/README.md`) |
 
 ## Estructura
@@ -27,14 +30,19 @@ BD 2 PROYECTO/
 │   ├── 01_requisitos.md
 │   ├── 02_modelo_de_datos.md
 │   ├── 03_politica_resguardo.md
-│   └── 04_indices_y_desempeño.md
+│   ├── 04_indices_y_desempeño.md
+│   ├── 05_guia_presentacion.md   (consultas para la exposición)
+│   └── 06_diccionario_de_datos.md (todos los campos de cada colección)
 ├── scripts/
 │   ├── 00_crear_colecciones.js
 │   ├── 01_carga_datos.js
 │   ├── 02_indices.js
 │   ├── 03_consultas.js
 │   ├── 04_desempeño_indices.js
-│   └── 05_vistas_y_seguridad.js
+│   ├── 05_vistas_y_seguridad.js
+│   ├── 06_series_temporales.js
+│   ├── 07_consultas_clase.js
+│   └── 08_pagina_inicio.js
 ├── frontend/          (tienda web: npm install y npm start)
 │   ├── server.js
 │   └── public/        (index.html, app.js, styles.css)
@@ -55,6 +63,8 @@ BD 2 PROYECTO/
 | `clientes` | Cuenta del cliente: direcciones, preferencias, favoritos y club de puntos |
 | `pedidos` | Compras web y app con ítems, cupón, pago en cuotas, envío con tracking y estados |
 | `carritos` | Carritos abiertos (se borran solos a los 30 días, índice TTL) |
+| `eventos_web` | **Serie temporal**: vistas de producto, carritos y búsquedas del sitio |
+| `pagina_inicio` | **Portada** (14 documentos, uno por bloque): banner, campañas, promociones, destacados, tendencias, marcas, secciones, envíos, pagos |
 | `reseñas` | Opiniones con compra verificada |
 | `promociones` | Cupones (BIENVENIDA10, CYBER2025, MADRE2026...) |
 | `depositos` | 3 depósitos regionales y 6 puntos de retiro (GeoJSON) |
@@ -76,6 +86,9 @@ mongosh "mongodb://localhost:27017" scripts/02_indices.js
 mongosh "mongodb://localhost:27017" scripts/03_consultas.js
 mongosh "mongodb://localhost:27017" scripts/04_desempeño_indices.js
 mongosh "mongodb://localhost:27017" scripts/05_vistas_y_seguridad.js
+mongosh "mongodb://localhost:27017" scripts/06_series_temporales.js
+mongosh "mongodb://localhost:27017" scripts/07_consultas_clase.js
+mongosh "mongodb://localhost:27017" scripts/08_pagina_inicio.js
 ```
 
 - **Más volumen para medir desempeño**: `mongosh --eval "var CANT_PEDIDOS=200000" scripts/01_carga_datos.js` y después volver a correr `02` y `04`.

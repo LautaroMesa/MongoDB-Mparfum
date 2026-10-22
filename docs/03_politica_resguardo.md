@@ -30,6 +30,10 @@
 | `backup/restore.sh` | Restauración en una base de prueba o en producción, con verificación |
 | `backup/verificar_restore.js` | Compara la base restaurada con la original |
 | `backup/crontab.txt` | Programación de resguardo, prueba de restauración y exportación |
+| `backup/backup_mongosh.js` / `backup/restaurar_mongosh.js` | Backup y restauración hechos desde mongosh |
+| `backup/backup_powershell.ps1` | Backup y restauración de prueba en Windows, midiendo tiempos y tamaño |
+| `backup/verificar_compass.js` | Verificación de la copia, para pegar en la consola de Compass |
+| `backup/copia_compass.js` | Copia de la base dentro del servidor, desde la consola de Compass |
 
 ## Procedimientos
 
@@ -52,6 +56,51 @@
 2. Se restauró en `mparfum_restore`. La verificación dio **OK** en las 9 colecciones y en las vistas (documentos, índices y validadores iguales).
 3. Se simuló una pérdida de datos borrando los 5.490 pedidos hechos desde la app: quedaron 14.510 de 20.000.
 4. Se restauró sobre `mparfum` con `--oplogReplay`: se recuperaron los **20.000** pedidos.
+
+## Backup y restauración desde mongosh
+
+Además de `mongodump`, el proyecto incluye un backup hecho **enteramente desde mongosh** con los módulos `fs` y `zlib` de Node.js:
+
+| Archivo | Uso |
+|---------|-----|
+| `backup/backup_mongosh.js` | Guarda cada colección en EJSON canónico comprimido (conserva int, double, Date y ObjectId), con su validador, sus índices y la definición de las vistas y de la serie temporal |
+| `backup/restaurar_mongosh.js` | Recrea las colecciones con sus opciones e índices y carga los documentos, en `mparfum` o en otra base |
+
+```
+load("backup/backup_mongosh.js")
+var DESTINO = "mparfum_restore"; load("backup/restaurar_mongosh.js")
+load("backup/verificar_restore.js")
+```
+Prueba realizada: el backup ocupó 3,4 MB. La verificación dio OK en las 10 colecciones (incluida la serie temporal) y, tras borrar los pedidos de la app, la restauración recuperó todos.
+
+**Copia rápida a otra base con `$out`**: duplica los datos en `mparfum_copia`, pero no copia índices ni validadores. Sirve para un resguardo puntual antes de una operación riesgosa, no como política de backup.
+
+## Mediciones en Windows (completar con los valores obtenidos)
+
+Con `backup/backup_powershell.ps1`:
+
+| Medición | Valor |
+|----------|-------|
+| Tiempo de backup (`mongodump`) | ____ s |
+| Tamaño del archivo | ____ MB |
+| Tiempo de restauración (`mongorestore`) = **RTO** medido | ____ s |
+| Verificación (`verificar_compass.js`) | RESTAURACION OK / con diferencias |
+
+Con un backup diario, el **RPO** es de hasta 24 horas: es lo máximo que se puede perder si la falla ocurre justo antes del próximo backup.
+
+## Por qué mongodump y no "Exportar" de Compass
+
+`mongodump` guarda los datos en **BSON**, con sus tipos exactos (Date, ObjectId, int y double), además de los índices, los validadores, las vistas y la definición de la serie temporal. El "Export Collection" de Compass genera JSON o CSV sólo con los datos: en CSV se pierden los tipos, y en ningún caso se guardan índices ni validadores. Sirve para compartir datos, no para recuperar la base.
+
+## Protección de datos personales (Ley 25.326)
+
+La base guarda datos personales de los clientes: nombre, DNI, email, teléfono, fecha de nacimiento y direcciones. Por la **Ley 25.326 de Protección de Datos Personales**, los resguardos también tienen que protegerse:
+
+- **Acceso restringido**: la carpeta de backups sólo la puede leer el usuario `backup` y el administrador. El usuario `backup` de MongoDB tiene sólo los roles `backup` y `restore` (script 05).
+- **Cifrado**: la copia que sale del servidor (regla 3-2-1) se cifra antes de enviarse, por ejemplo con `rclone crypt` o con un ZIP con AES-256.
+- **Fuera de la misma máquina**: un backup en el mismo disco no protege ante la rotura del disco.
+- **Retención limitada**: los backups viejos se borran según la política (7 / 4 / 12), para no guardar datos personales más tiempo del necesario.
+- **Minimización en las vistas**: el analista trabaja con `v_ventas_diarias`, que no expone datos personales.
 
 ## Alternativas a futuro
 

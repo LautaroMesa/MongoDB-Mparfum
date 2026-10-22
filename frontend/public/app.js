@@ -64,7 +64,7 @@ function detalleCorto(p) {
 }
 function tarjeta(p) {
   return `<a class="tarjeta" href="#/p/${p._id}">
-    <div class="vis">${ilustracion(p)}${!p.disponible ? '<span class="cinta agotado">Sin stock</span>' : p.etiquetas?.includes("best seller") ? '<span class="cinta">Best seller</span>' : p.tipo === "set" ? '<span class="cinta">Edición limitada</span>' : ""}</div>
+    <div class="vis">${ilustracion(p)}${!p.disponible ? '<span class="cinta agotado">Sin stock</span>' : p.etiqueta ? `<span class="cinta">${esc(p.etiqueta)}</span>` : p.etiquetas?.includes("best seller") ? '<span class="cinta">Best seller</span>' : p.tipo === "set" ? '<span class="cinta">Edición limitada</span>' : ""}</div>
     <div class="info"><span class="marca">${esc(p.marca.nombre)}</span><span class="nombre">${esc(p.nombre)}</span><span class="detalle">${esc(detalleCorto(p))}</span>${estrellas(p.rating)}
     <span class="precio">${p.presentaciones > 1 ? "<small>desde </small>" : ""}${fmt(p.precioDesde)}</span></div></a>`;
 }
@@ -83,7 +83,7 @@ function nombreCategoria(id) {
 // =====================================================================
 // PÁGINAS
 // =====================================================================
-async function paginaInicio() {
+async function paginaInicioBasica() {
   const destacados = await api("/api/destacados");
   const vis = destacados.slice(0, 3).map((p, i) => ilustracion(p, [190, 240, 170][i])).join("");
   $app.innerHTML = `
@@ -104,6 +104,62 @@ async function paginaInicio() {
       <div class="beneficio"><b>Cuotas sin interés</b><span class="muted">Hasta 6 cuotas con tarjeta de crédito.</span></div></div></section>
     <section class="bloque"><div class="titulo-seccion"><h2>Nuestras marcas</h2></div>
       <div class="marcas-tira">${["chanel:Chanel", "dior:Dior", "lancome:Lancôme", "ysl:Yves Saint Laurent", "carolina-herrera:Carolina Herrera", "tom-ford:Tom Ford", "mac:M·A·C", "estee-lauder:Estée Lauder", "la-roche-posay:La Roche-Posay", "kerastase:Kérastase"].map((m) => { const [id, n] = m.split(":"); return `<a href="#/catalogo?marca=${id}">${n}</a>`; }).join("")}</div></section>`;
+}
+
+// ---------- portada armada desde la colección pagina_inicio ----------
+let rotacionBanner;
+async function paginaInicio() {
+  const bloques = await api("/api/inicio").catch(() => []);
+  if (!bloques.length) return paginaInicioBasica(); // si no se corrió el script 08
+  clearInterval(rotacionBanner);
+  const html = [];
+  for (const b of bloques) {
+    if (b.tipo === "encabezado") {
+      document.querySelector(".topbar").textContent = b.barraAnuncios.join(" · ");
+      document.getElementById("input-buscar").placeholder = b.buscador.placeholder;
+    } else if (b.tipo === "banner_principal" && b.slides.length) {
+      html.push(`<section class="carrusel" data-rot="${b.rotacionSegundos || 6}">${b.slides.map((s, i) => `
+        <a class="slide ${i ? "" : "activo"}" href="${esc(s.enlace)}" style="background:linear-gradient(120deg, ${s.colores[0]} 0%, ${s.colores[1]} 75%)">
+          <div class="slide-txt"><span class="eyebrow">${s.promocion ? "Promoción " + esc(s.promocion) : "Mparfum"}</span><h1>${esc(s.titulo)}</h1><p>${esc(s.subtitulo)}</p><span class="btn claro">${esc(s.textoBoton)}</span></div>
+          <div class="slide-vis">${[0, 1, 2].map((k) => ilustracion({ tipo: ["fragancia", "set", "fragancia"][k], nombre: s.titulo + k, marca: { nombre: "" } }, [170, 230, 150][k])).join("")}</div>
+        </a>`).join("")}
+        ${b.slides.length > 1 ? `<div class="puntos">${b.slides.map((_, i) => `<button aria-label="Banner ${i + 1}" data-i="${i}" class="${i ? "" : "activo"}"></button>`).join("")}</div>` : ""}</section>`);
+    } else if (b.tipo === "campanas") {
+      html.push(`<section class="bloque"><div class="titulo-seccion"><h2>${esc(b.titulo)}</h2></div><div class="campanas">${b.items.map((c, i) => `
+        <a class="campana" href="${esc(c.enlace)}" style="background:linear-gradient(150deg, ${PALETAS[i * 3 % PALETAS.length][1]}, #1f1823)"><span class="eyebrow">${esc(c.marca)}</span><b>${esc(c.titulo)}</b><span>Ver más →</span></a>`).join("")}</div></section>`);
+    } else if (b.tipo === "promociones" && b.items.length) {
+      html.push(`<section class="bloque"><div class="titulo-seccion"><h2>${esc(b.titulo)}</h2></div><div class="promos">${b.items.map((p) => `
+        <div class="promo ${p.estado}"><b>${esc(p.destacado)}</b><span>${esc(p.texto)}</span>${p.estado === "proximamente" ? `<em>Desde el ${fecha(p.desde)}</em>` : `<code>${esc(p.codigo)}</code>`}</div>`).join("")}</div></section>`);
+    } else if ((b.tipo === "productos_destacados" || b.tipo === "tendencias") && b.productos.length) {
+      html.push(`<section class="bloque"><div class="titulo-seccion"><h2>${esc(b.titulo)}</h2><a href="#/catalogo">Ver todo el catálogo →</a></div><div class="grilla ${b.productos.length % 6 === 0 ? "seis" : "cuatro"}">${b.productos.map(tarjeta).join("")}</div></section>`);
+    } else if (b.tipo === "marcas") {
+      html.push(`<section class="bloque"><div class="titulo-seccion"><h2>${esc(b.titulo)}</h2></div><div class="marcas-tira">${b.marcas.map((m) => `<a href="#/catalogo?marca=${esc(m.marcaId)}">${esc(m.nombre)}</a>`).join("")}</div></section>`);
+    } else if (b.tipo === "seccion_categoria" && b.productos.length) {
+      html.push(`<section class="bloque"><div class="titulo-seccion"><div><h2>${esc(b.titulo)}</h2><p class="muted">${esc(b.bajada || "")}</p></div><a href="#/catalogo?categoria=${esc(b.categoria)}">Ver todo →</a></div>
+        ${b.subcategorias?.length ? `<div class="chips">${b.subcategorias.map((c) => `<a class="chip" href="#/catalogo?categoria=${esc(c.categoria)}">${esc(c.nombre)}</a>`).join("")}</div>` : ""}
+        <div class="grilla cuatro">${b.productos.map(tarjeta).join("")}</div></section>`);
+    } else if (b.tipo === "info_envios") {
+      html.push(`<section class="bloque"><div class="titulo-seccion"><h2>${esc(b.titulo)}</h2></div><div class="beneficios cuatro">${b.items.map((i) => `<div class="beneficio"><b>${esc(i.titulo)}</b><span class="muted">${esc(i.texto)}</span></div>`).join("")}</div></section>`);
+    } else if (b.tipo === "medios_pago") {
+      html.push(`<section class="bloque"><div class="titulo-seccion"><h2>${esc(b.titulo)}</h2></div><div class="beneficios cuatro">${b.medios.map((m) => `<div class="beneficio"><b>${esc(m.nombre)}</b><span class="muted">${esc(m.detalle)}${m.cuotasSinInteres ? ` · hasta ${m.cuotasSinInteres} cuotas sin interés` : ""}</span></div>`).join("")}</div>
+        ${b.beneficios?.length ? `<div class="chips">${b.beneficios.map((x) => `<span class="chip">${esc(x)}</span>`).join("")}</div>` : ""}</section>`);
+    } else if (b.tipo === "accesos") {
+      const pie = document.querySelector(".footer-in");
+      pie.querySelectorAll(".grupo-accesos").forEach((g) => g.remove());
+      pie.querySelectorAll(":scope > div:not(:first-child)").forEach((g) => g.remove());
+      pie.insertAdjacentHTML("beforeend", b.grupos.map((g) => `<div class="grupo-accesos"><b>${esc(g.titulo)}</b>${g.enlaces.map((e) => `<a href="${esc(e.enlace)}">${esc(e.texto)}</a>`).join("")}</div>`).join(""));
+    }
+  }
+  $app.innerHTML = html.join("");
+  // Rotación automática del banner principal
+  const car = $app.querySelector(".carrusel");
+  if (car) {
+    const slides = car.querySelectorAll(".slide"), puntos = car.querySelectorAll(".puntos button");
+    let i = 0;
+    const ir = (n) => { slides[i].classList.remove("activo"); puntos[i]?.classList.remove("activo"); i = (n + slides.length) % slides.length; slides[i].classList.add("activo"); puntos[i]?.classList.add("activo"); };
+    puntos.forEach((p) => (p.onclick = (e) => { e.preventDefault(); ir(+p.dataset.i); }));
+    if (slides.length > 1) rotacionBanner = setInterval(() => ir(i + 1), car.dataset.rot * 1000);
+  }
 }
 
 async function paginaCatalogo(params) {
@@ -393,6 +449,7 @@ async function navegar() {
   document.querySelectorAll(".menu a[data-cat]").forEach((a) => a.classList.toggle("activo", params.get("categoria") === a.dataset.cat));
   document.getElementById("input-buscar").value = params.get("q") || "";
   window.scrollTo({ top: 0 });
+  clearInterval(rotacionBanner);
   try {
     if (!partes.length) await paginaInicio();
     else if (partes[0] === "catalogo") await paginaCatalogo(params);

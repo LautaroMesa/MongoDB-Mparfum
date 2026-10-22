@@ -1,0 +1,635 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Guía de consultas - Mparfum</title><style>
+@page { size: A4; margin: 15mm 14mm 16mm 14mm; }
+* { box-sizing: border-box; }
+body { font-family: "DejaVu Sans", Arial, sans-serif; font-size: 10pt; line-height: 1.45; color: #1f1823; margin: 0; }
+h1 { font-size: 20pt; color: #7a2e4f; margin: 0 0 2mm; }
+.sub { color: #6f6575; font-size: 9.5pt; margin-bottom: 5mm; border-bottom: 2px solid #7a2e4f; padding-bottom: 3mm; }
+h2 { font-size: 13.5pt; color: #7a2e4f; margin: 7mm 0 2.5mm; border-bottom: 1px solid #e4dfea; padding-bottom: 1mm; break-after: avoid; page-break-after: avoid; }
+h3 { font-size: 11pt; margin: 4mm 0 2mm; break-after: avoid; }
+p { margin: 1.5mm 0; break-after: avoid; }
+ul, ol { margin: 1.5mm 0; padding-left: 6mm; }
+li { margin: 0.8mm 0; }
+pre { background: #f3eef6; border: 1px solid #e4dfea; border-left: 3px solid #7a2e4f; border-radius: 4px; padding: 2.2mm 3mm; margin: 1.5mm 0 2.5mm; font-family: "DejaVu Sans Mono", Consolas, monospace; font-size: 8.4pt; white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; break-inside: avoid; }
+code { font-family: "DejaVu Sans Mono", Consolas, monospace; font-size: 8.4pt; background: #f3eef6; padding: 0 0.8mm; border-radius: 2px; overflow-wrap: anywhere; }
+pre code { background: none; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 2mm 0 3mm; font-size: 8.8pt; }
+th, td { border: 1px solid #e4dfea; padding: 1.6mm 2.2mm; text-align: left; vertical-align: top; }
+th { background: #7a2e4f; color: #fff; }
+tr { break-inside: avoid; }
+tr:nth-child(even) td { background: #faf8fb; }
+td code { overflow-wrap: anywhere; word-break: break-word; }
+hr { border: 0; border-top: 1px solid #e4dfea; margin: 5mm 0; }
+strong { color: #1f1823; }
+</style></head><body><h1 id="guía-de-consultas-para-la-presentación">Guía de consultas para
+la presentación</h1><div class="sub">Proyecto Mparfum · Diseño de Bases de Datos II · Universidad de Mendoza · 2026<br>Cada tema de la clase <i>MongoDB: Gestión de Datos</i> (Ing. F. Zapata) aplicado a la base <code>mparfum</code>, más índices y medición de rendimiento.</div>
+<p>Cada tema de la clase <em>MongoDB: Gestión de Datos</em> (Ing. F.
+Zapata) aplicado a la base <code>mparfum</code>. Los comandos se pegan
+<strong>de a uno</strong> en mongosh.</p>
+<p>Para empezar, abrí el CMD y escribí <code>mongosh</code>. Dentro de
+mongosh, seleccioná la base:</p>
+<pre><code>use mparfum</code></pre>
+<p>Todo esto también corre de una sola vez con
+<code>mongosh scripts/07_consultas_clase.js</code>, que deja la base
+como estaba.</p>
+<hr />
+<h2 id="1-operaciones-básicas">1. Operaciones básicas</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Comando</th>
+<th>Qué muestra</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>show dbs</code></td>
+<td>Las bases del servidor (aparece <code>mparfum</code>)</td>
+</tr>
+<tr class="even">
+<td><code>use mparfum</code></td>
+<td>Selecciona la base activa</td>
+</tr>
+<tr class="odd">
+<td><code>db</code></td>
+<td>Confirma la base activa</td>
+</tr>
+<tr class="even">
+<td><code>show collections</code></td>
+<td>Las 10 colecciones y las 3 vistas</td>
+</tr>
+<tr class="odd">
+<td><code>db.createCollection("prueba")</code></td>
+<td>Crea una colección vacía</td>
+</tr>
+<tr class="even">
+<td><code>db.prueba.drop()</code></td>
+<td>La elimina</td>
+</tr>
+</tbody>
+</table>
+<p>Para mostrar <code>dropDatabase()</code> <strong>sin borrar el
+proyecto</strong>, usá otra base:</p>
+<pre><code>use base_prueba
+db.temporal.insertOne({ x: 1 })
+db.dropDatabase()
+use mparfum</code></pre>
+<h2 id="2-insertar-consultar-modificar-y-eliminar">2. Insertar,
+consultar, modificar y eliminar</h2>
+<p><strong>insertOne</strong>: alta de un perfume. Si falta un campo
+obligatorio, lo rechaza el validador.</p>
+<pre><code>db.productos.insertOne({ nombre: &quot;Idôle&quot;, tipo: &quot;fragancia&quot;, genero: &quot;mujer&quot;, marca: { _id: &quot;lancome&quot;, nombre: &quot;Lancôme&quot; }, categoria: { _id: &quot;fragancias-mujer&quot;, ruta: [&quot;fragancias&quot;, &quot;fragancias-mujer&quot;] }, etiquetas: [&quot;floral&quot;], variantes: [{ sku: &quot;FR-9001&quot;, presentacion: &quot;Eau de Parfum 50 ml&quot;, precio: 189000, stock: [{ deposito: &quot;DEP-MZA&quot;, cantidad: NumberInt(10) }] }], activo: true })</code></pre>
+<p>Para mostrar el validador en acción, intentá insertar un producto mal
+cargado:</p>
+<pre><code>db.productos.insertOne({ nombre: &quot;Sin datos&quot;, tipo: &quot;perfume&quot; })</code></pre>
+<p>→ <code>Document failed validation</code></p>
+<p><strong>find / findOne</strong></p>
+<pre><code>db.productos.find()
+db.productos.findOne()
+db.productos.find({ tipo: &quot;fragancia&quot;, genero: &quot;hombre&quot; }, { nombre: 1, &quot;marca.nombre&quot;: 1, _id: 0 })
+db.clientes.findOne({ email: &quot;camila.rodriguez49@yahoo.com.ar&quot; })</code></pre>
+<p><strong>update</strong> con <code>$set</code>, <code>$inc</code> y
+<code>$unset</code></p>
+<pre><code>db.productos.updateOne({ nombre: &quot;Idôle&quot; }, { $set: { descripcion: &quot;Floral chipre, lanzamiento 2026&quot; } })
+db.productos.updateOne({ nombre: &quot;Idôle&quot; }, { $inc: { &quot;variantes.0.precio&quot;: 5000 } })
+db.productos.updateOne({ nombre: &quot;Idôle&quot; }, { $unset: { descripcion: &quot;&quot; } })</code></pre>
+<p><strong>Eliminar</strong> (<code>remove</code> de la clase =
+<code>deleteOne</code> / <code>deleteMany</code> en mongosh nuevo)</p>
+<pre><code>db.productos.deleteOne({ nombre: &quot;Idôle&quot; })</code></pre>
+<h2 id="3-gestión-de-arrays">3. Gestión de arrays</h2>
+<p>Se trabaja sobre las <code>etiquetas</code> de un producto. Primero
+se crea uno de prueba:</p>
+<pre><code>db.productos.insertOne({ nombre: &quot;Prueba arrays&quot;, tipo: &quot;fragancia&quot;, marca: { _id: &quot;dior&quot;, nombre: &quot;Dior&quot; }, categoria: { _id: &quot;fragancias-mujer&quot;, ruta: [&quot;fragancias&quot;] }, etiquetas: [&quot;floral&quot;], variantes: [{ sku: &quot;FR-9002&quot;, presentacion: &quot;50 ml&quot;, precio: 1000, stock: [] }], activo: true })</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>Operador</th>
+<th>Comando</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$push</code></td>
+<td><code>db.productos.updateOne({ nombre: "Prueba arrays" }, { $push: { etiquetas: "día de la madre" } })</code></td>
+</tr>
+<tr class="even">
+<td><code>$push</code> + <code>$each</code></td>
+<td><code>db.productos.updateOne({ nombre: "Prueba arrays" }, { $push: { etiquetas: { $each: ["noche", "elegante", "best seller"] } } })</code></td>
+</tr>
+<tr class="odd">
+<td><code>$pop: 1</code> (último, pila)</td>
+<td><code>db.productos.updateOne({ nombre: "Prueba arrays" }, { $pop: { etiquetas: 1 } })</code></td>
+</tr>
+<tr class="even">
+<td><code>$pop: -1</code> (primero, cola)</td>
+<td><code>db.productos.updateOne({ nombre: "Prueba arrays" }, { $pop: { etiquetas: -1 } })</code></td>
+</tr>
+<tr class="odd">
+<td><code>$pull</code></td>
+<td><code>db.productos.updateOne({ nombre: "Prueba arrays" }, { $pull: { etiquetas: "noche" } })</code></td>
+</tr>
+<tr class="even">
+<td><code>$addToSet</code> (no duplica)</td>
+<td><code>db.productos.updateOne({ nombre: "Prueba arrays" }, { $addToSet: { etiquetas: "elegante" } })</code></td>
+</tr>
+</tbody>
+</table>
+<p>Para ver cómo quedó y después borrarlo:</p>
+<pre><code>db.productos.findOne({ nombre: &quot;Prueba arrays&quot; }, { etiquetas: 1 })
+db.productos.deleteOne({ nombre: &quot;Prueba arrays&quot; })</code></pre>
+<p>En el proyecto real, los arrays se usan en <code>favoritos</code> de
+cada cliente (<code>$addToSet</code> / <code>$pull</code> desde la
+tienda web) y en <code>historialEstados</code> de cada pedido
+(<code>$push</code> cada vez que cambia de estado).</p>
+<h2 id="4-carga-masiva">4. Carga masiva</h2>
+<pre><code>db.prueba.insertMany([{ _id: 0 }, { _id: 1 }, { _id: 2 }, { _id: 3 }])
+db.prueba.insertMany([{ _id: 10 }, { _id: 11 }, { _id: 11 }, { _id: 12 }])</code></pre>
+<p>→ Error E11000. Se insertan 10 y 11, y <strong>el 12 no</strong>: el
+proceso se interrumpe en el duplicado.</p>
+<pre><code>db.prueba.insertMany([{ _id: 20 }, { _id: 21 }, { _id: 21 }, { _id: 22 }], { ordered: false })</code></pre>
+<p>→ Con <code>ordered: false</code> saltea el duplicado y <strong>sí
+inserta el 22</strong>.</p>
+<pre><code>for (var i = 0; i &lt; 1000; i++) { db.prueba.insertOne({ clave: &quot;dato&quot; + i, num: i, otro: i * 2 }) }
+db.prueba.countDocuments()
+db.prueba.drop()</code></pre>
+<p>En el proyecto, el script <code>01_carga_datos.js</code> carga los
+20.000 pedidos con <code>insertMany</code> en lotes de 5.000, que es
+mucho más rápido que un <code>insertOne</code> por documento.</p>
+<h2 id="5-operadores-de-consulta">5. Operadores de consulta</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Operador</th>
+<th>Consulta en Mparfum</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$gte</code> / <code>$lte</code> (rango)</td>
+<td><code>db.productos.find({ "variantes.precio": { $gte: 100000, $lte: 150000 } }, { nombre: 1 })</code></td>
+</tr>
+<tr class="even">
+<td><code>$gt</code> / <code>$lt</code></td>
+<td><code>db.pedidos.countDocuments({ total: { $gt: 1000000 } })</code></td>
+</tr>
+<tr class="odd">
+<td><code>$in</code></td>
+<td><code>db.productos.find({ "marca._id": { $in: ["chanel", "dior", "lancome"] } }, { nombre: 1 })</code></td>
+</tr>
+<tr class="even">
+<td><code>$nin</code> / <code>$ne</code></td>
+<td><code>db.productos.find({ tipo: { $nin: ["fragancia", "set"] }, genero: { $ne: "unisex" } }, { nombre: 1 })</code></td>
+</tr>
+<tr class="odd">
+<td><code>$or</code></td>
+<td><code>db.productos.find({ $or: [{ genero: "hombre" }, { tipo: "cabello" }] }, { nombre: 1 })</code></td>
+</tr>
+<tr class="even">
+<td><code>$and</code> explícito</td>
+<td><code>db.pedidos.countDocuments({ $and: [{ canal: "app" }, { "pago.cuotas": 12 }] })</code></td>
+</tr>
+<tr class="odd">
+<td><code>$exists</code></td>
+<td><code>db.pedidos.countDocuments({ promocion: { $exists: true } })</code></td>
+</tr>
+<tr class="even">
+<td>Expresión regular</td>
+<td><code>db.productos.find({ nombre: /^s/i }, { nombre: 1 })</code></td>
+</tr>
+<tr class="odd">
+<td><code>$elemMatch</code></td>
+<td><code>db.productos.find({ variantes: { $elemMatch: { precio: { $lt: 60000 }, "contenido.unidad": "ml" } } }, { nombre: 1 })</code></td>
+</tr>
+<tr class="even">
+<td><code>$all</code></td>
+<td><code>db.productos.find({ "atributos.notas.fondo": { $all: ["vainilla", "pachulí"] } }, { nombre: 1 })</code></td>
+</tr>
+<tr class="odd">
+<td><code>$size</code></td>
+<td><code>db.productos.countDocuments({ variantes: { $size: 3 } })</code></td>
+</tr>
+<tr class="even">
+<td>Notación de punto</td>
+<td><code>db.pedidos.countDocuments({ "envio.direccion.ciudad": "Godoy Cruz" })</code></td>
+</tr>
+<tr class="odd">
+<td><code>$text</code> (índice de texto)</td>
+<td><code>db.productos.find({ $text: { $search: "vainilla" } }, { nombre: 1 })</code></td>
+</tr>
+<tr class="even">
+<td><code>sort</code> / <code>skip</code> / <code>limit</code></td>
+<td><code>db.productos.find({}, { nombre: 1, rating: 1 }).sort({ "rating.promedio": -1 }).skip(0).limit(5)</code></td>
+</tr>
+<tr class="odd">
+<td><code>distinct</code></td>
+<td><code>db.productos.distinct("atributos.familiaOlfativa")</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="6-tipos-de-datos">6. Tipos de datos</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Tipo</th>
+<th>Dónde está en Mparfum</th>
+<th>Consulta</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>string</code></td>
+<td><code>nombre</code>, <code>email</code></td>
+<td><code>db.clientes.countDocuments({ email: /gmail/ })</code></td>
+</tr>
+<tr class="even">
+<td><code>number</code> (int / double)</td>
+<td><code>numero</code> y <code>precio</code> son int (enteros);
+<code>rating.promedio</code> es double (decimales). En mongosh 2.x,
+<code>5</code> se guarda como int y <code>5.5</code> como double</td>
+<td><code>db.productos.countDocuments({ "rating.promedio": { $type: "double" } })</code></td>
+</tr>
+<tr class="odd">
+<td><code>boolean</code></td>
+<td><code>activo</code>, <code>compraVerificada</code></td>
+<td><code>db.productos.find({ activo: false })</code></td>
+</tr>
+<tr class="even">
+<td><code>date</code></td>
+<td><code>fecha</code> de pedidos, <code>fechaNacimiento</code></td>
+<td><code>db.pedidos.countDocuments({ fecha: { $gte: new Date("2026-10-01") } })</code></td>
+</tr>
+<tr class="odd">
+<td><code>array</code></td>
+<td><code>variantes</code>, <code>etiquetas</code>,
+<code>favoritos</code></td>
+<td><code>db.productos.find({ etiquetas: "best seller" }, { nombre: 1 })</code></td>
+</tr>
+<tr class="even">
+<td>documento embebido</td>
+<td><code>marca</code>, <code>envio</code>, <code>pago</code>,
+<code>club</code></td>
+<td><code>db.clientes.countDocuments({ "club.nivel": "black" })</code></td>
+</tr>
+<tr class="odd">
+<td><code>ObjectId</code></td>
+<td><code>_id</code>, <code>cliente._id</code>,
+<code>items.productoId</code></td>
+<td><code>db.pedidos.findOne()._id.getTimestamp()</code></td>
+</tr>
+<tr class="even">
+<td><code>null</code> / ausente</td>
+<td><code>tono</code> sólo en maquillaje</td>
+<td><code>db.productos.find({ "variantes.tono": { $exists: true } }, { nombre: 1 })</code></td>
+</tr>
+<tr class="odd">
+<td><code>regex</code></td>
+<td>búsquedas</td>
+<td><code>db.productos.countDocuments({ descripcion: /floral/i })</code></td>
+</tr>
+<tr class="even">
+<td>GeoJSON (extra)</td>
+<td><code>depositos.ubicacion</code></td>
+<td>consulta C13 (<code>$geoNear</code>)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="7-relaciones">7. Relaciones</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Cardinalidad</th>
+<th>Ejemplo en Mparfum</th>
+<th>Cómo se resolvió</th>
+<th>Por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Uno a uno</strong></td>
+<td>Pedido → envío</td>
+<td>Embebido (<code>pedido.envio</code>)</td>
+<td>Siempre se leen juntos y el envío no existe sin el pedido</td>
+</tr>
+<tr class="even">
+<td><strong>Uno a muchos (embebido)</strong></td>
+<td>Producto → variantes (30, 50, 100 ml)</td>
+<td>Array embebido</td>
+<td>Son pocas, se muestran juntas en la ficha y se actualiza el stock en
+una sola operación</td>
+</tr>
+<tr class="odd">
+<td><strong>Uno a muchos (referenciado)</strong></td>
+<td>Cliente → pedidos</td>
+<td><code>pedido.cliente._id</code></td>
+<td>Los pedidos crecen sin límite y no entrarían en el documento del
+cliente (16 MB)</td>
+</tr>
+<tr class="even">
+<td><strong>Uno a muchos (referenciado)</strong></td>
+<td>Producto → reseñas</td>
+<td><code>reseña.productoId</code></td>
+<td>Ídem: crecen sin límite</td>
+</tr>
+<tr class="odd">
+<td><strong>Muchos a muchos</strong></td>
+<td>Clientes ↔︎ productos (favoritos)</td>
+<td>Array de <code>ObjectId</code> en el cliente</td>
+<td>Un cliente tiene varios favoritos y un producto está en los
+favoritos de muchos clientes</td>
+</tr>
+<tr class="even">
+<td><strong>Muchos a uno</strong></td>
+<td>Productos → marca / categoría</td>
+<td>Referencia extendida <code>{ _id, nombre }</code></td>
+<td>Se muestra el nombre sin hacer <code>$lookup</code></td>
+</tr>
+</tbody>
+</table>
+<p>Se usan <code>_id</code> de texto en marcas y categorías
+(<code>"dior"</code>, <code>"fragancias-mujer"</code>) porque son
+legibles y estables, y <code>ObjectId</code> en lo que se genera en
+cantidad (clientes, pedidos, productos). La clase pide "considerar el
+tipo de dato adecuado para el <code>_id</code>".</p>
+<p><strong>Uno a muchos con <code>$lookup</code></strong> (el ejemplo de
+la clase con clientes y pedidos):</p>
+<pre><code>db.clientes.aggregate([ { $match: { email: &quot;camila.rodriguez49@yahoo.com.ar&quot; } }, { $lookup: { from: &quot;pedidos&quot;, localField: &quot;_id&quot;, foreignField: &quot;cliente._id&quot;, as: &quot;pedidosDelCliente&quot; } }, { $project: { nombre: 1, apellido: 1, cantidad: { $size: &quot;$pedidosDelCliente&quot; } } } ])</code></pre>
+<p><strong>Muchos a muchos con <code>$lookup</code></strong>: los
+favoritos de un cliente con su nombre.</p>
+<pre><code>db.clientes.aggregate([ { $match: { &quot;favoritos.2&quot;: { $exists: true } } }, { $limit: 1 }, { $lookup: { from: &quot;productos&quot;, localField: &quot;favoritos&quot;, foreignField: &quot;_id&quot;, as: &quot;prod&quot; } }, { $project: { nombre: 1, favoritos: &quot;$prod.nombre&quot; } } ])</code></pre>
+<h2 id="8-consultas-avanzadas-con-aggregate">8. Consultas avanzadas con
+<code>aggregate()</code></h2>
+<p><strong><code>$match</code> + <code>$group</code> +
+<code>$sum</code></strong>: facturación por canal.</p>
+<pre><code>db.pedidos.aggregate([ { $match: { estado: { $ne: &quot;cancelado&quot; } } }, { $group: { _id: &quot;$canal&quot;, facturacion: { $sum: &quot;$total&quot; }, pedidos: { $sum: 1 } } } ])</code></pre>
+<p><strong><code>$group</code> con <code>_id: null</code></strong>: un
+único total.</p>
+<pre><code>db.pedidos.aggregate([ { $match: { estado: &quot;entregado&quot; } }, { $group: { _id: null, suma: { $sum: &quot;$total&quot; }, promedio: { $avg: &quot;$total&quot; } } } ])</code></pre>
+<p><strong><code>$project</code></strong>: incluir y excluir campos. No
+se pueden mezclar 1 y 0, salvo <code>_id: 0</code>.</p>
+<pre><code>db.clientes.aggregate([ { $project: { _id: 0, apellido: 1, nombre: 1, email: 1 } } ])
+db.clientes.aggregate([ { $project: { dni: 0, telefono: 0, direcciones: 0 } } ])</code></pre>
+<p><strong><code>$project</code></strong>: renombrar y calcular con
+<code>$add</code> y <code>$subtract</code>.</p>
+<pre><code>db.pedidos.aggregate([ { $match: { descuento: { $gt: 0 } } }, { $limit: 5 }, { $project: { _id: 0, nroPedido: &quot;$numero&quot;, cliente: &quot;$cliente.nombre&quot;, sinDescuento: { $add: [&quot;$subtotal&quot;, &quot;$envio.costo&quot;] }, pagado: { $subtract: [{ $add: [&quot;$subtotal&quot;, &quot;$envio.costo&quot;] }, &quot;$descuento&quot;] } } } ])</code></pre>
+<p><strong><code>$project</code> + <code>$cond</code></strong>: gama de
+precio de cada producto.</p>
+<pre><code>db.productos.aggregate([ { $project: { nombre: 1, precio: { $min: &quot;$variantes.precio&quot; } } }, { $project: { nombre: 1, precio: 1, gama: { $cond: { if: { $gte: [&quot;$precio&quot;, 150000] }, then: &quot;Premium&quot;, else: &quot;Accesible&quot; } } } } ])</code></pre>
+<p><strong><code>$cond</code></strong> con edades (como el Adulto /
+Menor de la clase):</p>
+<pre><code>db.clientes.aggregate([ { $project: { nombre: 1, edad: { $dateDiff: { startDate: &quot;$fechaNacimiento&quot;, endDate: &quot;$$NOW&quot;, unit: &quot;year&quot; } } } }, { $project: { nombre: 1, edad: 1, categoria: { $cond: { if: { $gte: [&quot;$edad&quot;, 18] }, then: &quot;Adulto&quot;, else: &quot;Menor&quot; } } } } ])</code></pre>
+<p><strong><code>$lookup</code> + <code>$unwind</code> +
+<code>$group</code> + <code>$sort</code></strong>: las marcas que más
+facturan.</p>
+<pre><code>db.pedidos.aggregate([ { $unwind: &quot;$items&quot; }, { $lookup: { from: &quot;productos&quot;, localField: &quot;items.productoId&quot;, foreignField: &quot;_id&quot;, as: &quot;p&quot; } }, { $group: { _id: { $first: &quot;$p.marca.nombre&quot; }, total: { $sum: { $multiply: [&quot;$items.cantidad&quot;, &quot;$items.precioUnitario&quot;] } } } }, { $sort: { total: -1 } }, { $limit: 5 } ])</code></pre>
+<p>Más consultas avanzadas del proyecto (en
+<code>03_consultas.js</code>): <code>$facet</code> (C18),
+<code>$bucket</code> (C17), <code>$graphLookup</code> (C15),
+<code>$geoNear</code> (C13), <code>$setWindowFields</code> (C9),
+<code>$merge</code> (C27) y la transacción (C29).</p>
+<h2 id="9-series-temporales">9. Series temporales</h2>
+<p>La colección <strong><code>eventos_web</code></strong> (script 06)
+registra cada vista de producto, cada "agregar al carrito" y cada
+búsqueda del sitio.</p>
+<pre><code>db.createCollection(&quot;eventos_web&quot;, { timeseries: { timeField: &quot;fecha&quot;, metaField: &quot;meta&quot;, granularity: &quot;minutes&quot; }, expireAfterSeconds: 15552000 })</code></pre>
+<p>Encaja con el <em>¿cuándo usarlas?</em> de la clase:</p>
+<ul>
+<li>✅ se insertan muchos datos ordenados por tiempo (cada clic);</li>
+<li>✅ se consulta por rangos de tiempo (visitas por día, horas
+pico);</li>
+<li>✅ no se modifican ni se borran a mano (expiran solos a los 180
+días);</li>
+<li>✅ ocupan menos disco: en la prueba, <strong>47% menos</strong> que
+la misma información en una colección común.</li>
+</ul>
+<p>Visitas por día de la última semana:</p>
+<pre><code>db.eventos_web.aggregate([ { $match: { &quot;meta.tipo&quot;: &quot;vista_producto&quot;, fecha: { $gte: new Date(Date.now() - 7*86400000) } } }, { $group: { _id: { $dateTrunc: { date: &quot;$fecha&quot;, unit: &quot;day&quot;, timezone: &quot;America/Argentina/Mendoza&quot; } }, vistas: { $sum: 1 } } }, { $sort: { _id: 1 } } ])</code></pre>
+<p>Horas pico:</p>
+<pre><code>db.eventos_web.aggregate([ { $group: { _id: { $hour: { date: &quot;$fecha&quot;, timezone: &quot;America/Argentina/Mendoza&quot; } }, eventos: { $sum: 1 } } }, { $sort: { eventos: -1 } }, { $limit: 5 } ])</code></pre>
+<hr />
+<h2 id="10-crear-índices">10. Crear índices</h2>
+<p>Sintaxis:
+<code>db.coleccion.createIndex({ campo: 1 }, { opciones })</code>. El
+<code>1</code> es ascendente y el <code>-1</code> descendente.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Tipo</th>
+<th>Comando</th>
+<th>Para qué</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Simple</td>
+<td><code>db.productos.createIndex({ "marca._id": 1 })</code></td>
+<td>Buscar por marca</td>
+</tr>
+<tr class="even">
+<td>Con nombre</td>
+<td><code>db.productos.createIndex({ "marca._id": 1 }, { name: "ix_marca" })</code></td>
+<td>Nombre propio en vez del automático</td>
+</tr>
+<tr class="odd">
+<td>Único</td>
+<td><code>db.clientes.createIndex({ email: 1 }, { unique: true })</code></td>
+<td>No permite emails repetidos (error E11000)</td>
+</tr>
+<tr class="even">
+<td>Compuesto</td>
+<td><code>db.pedidos.createIndex({ "cliente._id": 1, fecha: -1 })</code></td>
+<td>"Mis pedidos": filtra por cliente y devuelve ordenado por fecha.
+Orden de los campos: regla <strong>ESR</strong> (Igualdad, Orden,
+Rango)</td>
+</tr>
+<tr class="odd">
+<td>Multikey (array)</td>
+<td><code>db.pedidos.createIndex({ "items.productoId": 1 })</code></td>
+<td>Indexa cada elemento del array</td>
+</tr>
+<tr class="even">
+<td>Texto</td>
+<td><code>db.productos.createIndex({ nombre: "text", descripcion: "text" }, { default_language: "spanish" })</code></td>
+<td>Buscador con <code>$text</code>. Sólo uno por colección (en
+<code>productos</code> ya existe)</td>
+</tr>
+<tr class="odd">
+<td>Parcial</td>
+<td><code>db.productos.createIndex({ "rating.promedio": -1 }, { partialFilterExpression: { activo: true } })</code></td>
+<td>Indexa sólo los productos activos</td>
+</tr>
+<tr class="even">
+<td>TTL</td>
+<td><code>db.carritos.createIndex({ actualizado: 1 }, { expireAfterSeconds: 2592000 })</code></td>
+<td>Borra los carritos sin actividad a los 30 días</td>
+</tr>
+<tr class="odd">
+<td>Geoespacial</td>
+<td><code>db.depositos.createIndex({ ubicacion: "2dsphere" })</code></td>
+<td>Punto de retiro más cercano con <code>$geoNear</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ver, probar y borrar</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Acción</th>
+<th>Comando</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ver los índices</td>
+<td><code>db.pedidos.getIndexes()</code></td>
+</tr>
+<tr class="even">
+<td>Sólo los nombres</td>
+<td><code>db.pedidos.getIndexes().map(i =&gt; i.name)</code></td>
+</tr>
+<tr class="odd">
+<td>Cuántas veces se usó cada uno</td>
+<td><code>db.pedidos.aggregate([{ $indexStats: {} }, { $project: { _id: 0, nombre: "$name", usos: "$accesses.ops" } }])</code></td>
+</tr>
+<tr class="even">
+<td>Tamaño de cada índice</td>
+<td><code>db.pedidos.stats().indexSizes</code></td>
+</tr>
+<tr class="odd">
+<td>Borrar uno</td>
+<td><code>db.productos.dropIndex("ix_marca")</code></td>
+</tr>
+</tbody>
+</table>
+<p>En Compass: colección → pestaña <strong>Indexes</strong> → botón
+<strong>Create Index</strong>.</p>
+<p><strong>Demostración en vivo sin romper nada</strong> (crear un
+índice, comprobar la mejora y borrarlo):</p>
+<pre><code>db.clientes.find({ &quot;preferencias.tipoPiel&quot;: &quot;grasa&quot; }).explain(&quot;executionStats&quot;).executionStats.totalDocsExamined</code></pre>
+<p>→ 2.000: sin índice recorre todos los clientes.</p>
+<pre><code>db.clientes.createIndex({ &quot;preferencias.tipoPiel&quot;: 1 }, { name: &quot;ix_prueba_piel&quot; })
+db.clientes.find({ &quot;preferencias.tipoPiel&quot;: &quot;grasa&quot; }).explain(&quot;executionStats&quot;).executionStats.totalDocsExamined</code></pre>
+<p>→ unos 400: sólo los clientes con piel grasa.</p>
+<pre><code>db.clientes.dropIndex(&quot;ix_prueba_piel&quot;)</code></pre>
+<h2 id="11-medir-el-rendimiento">11. Medir el rendimiento</h2>
+<p>Se mide con <code>explain("executionStats")</code>. Los cuatro datos
+para mirar:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Dato</th>
+<th>Qué significa</th>
+<th>Lo ideal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>stage</code></td>
+<td><code>IXSCAN</code> = usó un índice. <code>COLLSCAN</code> =
+recorrió toda la colección</td>
+<td><code>IXSCAN</code></td>
+</tr>
+<tr class="even">
+<td><code>totalDocsExamined</code></td>
+<td>Documentos leídos</td>
+<td>Lo más cerca posible de <code>nReturned</code></td>
+</tr>
+<tr class="odd">
+<td><code>nReturned</code></td>
+<td>Documentos devueltos</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td><code>executionTimeMillis</code></td>
+<td>Tiempo en milisegundos</td>
+<td>Lo más bajo posible</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Función para ver el resumen</strong> (se pega una sola vez en
+mongosh):</p>
+<pre><code>const ver = (exp) =&gt; { const s = exp.executionStats; let p = exp.queryPlanner.winningPlan.queryPlan || exp.queryPlanner.winningPlan; while (p.inputStage) p = p.inputStage; return { plan: p.stage, indice: p.indexName || &quot;ninguno&quot;, docsExaminados: s.totalDocsExamined, devueltos: s.nReturned, ms: s.executionTimeMillis } }</code></pre>
+<p><strong>Comparar sin índice y con índice</strong> ("mis pedidos" de
+un cliente):</p>
+<pre><code>const cli = db.pedidos.findOne().cliente._id</code></pre>
+<p>Sin índice (<code>hint({ $natural: 1 })</code> obliga a recorrer toda
+la colección):</p>
+<pre><code>ver(db.pedidos.find({ &quot;cliente._id&quot;: cli }).sort({ fecha: -1 }).hint({ $natural: 1 }).explain(&quot;executionStats&quot;))</code></pre>
+<p>→
+<code>{ plan: 'COLLSCAN', indice: 'ninguno', docsExaminados: 20000, devueltos: 12, ms: 15 }</code></p>
+<p>Con índice:</p>
+<pre><code>ver(db.pedidos.find({ &quot;cliente._id&quot;: cli }).sort({ fecha: -1 }).explain(&quot;executionStats&quot;))</code></pre>
+<p>→
+<code>{ plan: 'IXSCAN', indice: 'ix_cliente_fecha', docsExaminados: 12, devueltos: 12, ms: 0 }</code></p>
+<p>Otros ejemplos:</p>
+<pre><code>ver(db.pedidos.find({ numero: 105000 }).explain(&quot;executionStats&quot;))
+ver(db.productos.find({ $text: { $search: &quot;vainilla&quot; } }).explain(&quot;executionStats&quot;))
+ver(db.clientes.find({ email: &quot;camila.rodriguez49@yahoo.com.ar&quot; }).explain(&quot;executionStats&quot;))</code></pre>
+<p>En Compass: colección → pestaña <strong>Explain Plan</strong> →
+filtro <code>{ numero: 105000 }</code> → <strong>Explain</strong>. Para
+comparar, en <strong>Options</strong> poner en <strong>Hint</strong>
+<code>{ "$natural": 1 }</code>.</p>
+<p><strong>Medición completa del proyecto</strong> (7 consultas con y
+sin índice), desde el CMD:</p>
+<pre><code>mongosh &quot;scripts/04_desempeño_indices.js&quot;</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>Consulta (200.000 pedidos)</th>
+<th>Docs examinados sin → con</th>
+<th>Tiempo sin → con</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mis pedidos de un cliente</td>
+<td>200.000 → 10</td>
+<td>121 ms → 0 ms</td>
+</tr>
+<tr class="even">
+<td>Pedido por número</td>
+<td>200.000 → 1</td>
+<td>113 ms → 0 ms</td>
+</tr>
+<tr class="odd">
+<td>Cola de despacho del depósito</td>
+<td>200.000 → 1.853</td>
+<td>151 ms → 6 ms</td>
+</tr>
+<tr class="even">
+<td>Pedidos que incluyen un producto</td>
+<td>200.000 → 5.527</td>
+<td>178 ms → 11 ms</td>
+</tr>
+<tr class="odd">
+<td>Login por email (consulta cubierta)</td>
+<td>2.000 → 0</td>
+<td>1 ms → 0 ms</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="preguntas-que-puede-hacer-el-profesor">Preguntas que puede hacer
+el profesor</h2>
+<p><strong>¿Por qué MongoDB y no una base relacional?</strong> Un
+perfume y una base de maquillaje tienen atributos totalmente distintos.
+En SQL harían falta muchas tablas o columnas nulas. Con documentos, cada
+producto guarda lo suyo en <code>atributos</code>, y el validador
+<code>$jsonSchema</code> controla lo común.</p>
+<p><strong>¿Por qué los ítems del pedido están embebidos y no
+referenciados?</strong> Porque el pedido tiene que guardar el precio del
+momento de la compra. Si mañana sube el precio del producto, el pedido
+viejo no debe cambiar.</p>
+<p><strong>¿Por qué las reseñas no están dentro del producto?</strong>
+Porque crecen sin límite. Un documento no puede superar los 16 MB, y
+además el producto se volvería pesado de leer en el catálogo.</p>
+<p><strong>¿Qué colección es la más usada?</strong>
+<code>pedidos</code>: la más grande, la que más crece, la que más se
+consulta y la que tiene más índices. <code>productos</code> es la más
+leída por los clientes.</p>
+<p><strong>¿Cómo se mejoró el rendimiento?</strong> Con índices. Ver
+<code>docs/04_indices_y_desempeño.md</code>: "mis pedidos" pasa de
+revisar 200.000 documentos a revisar 10.</p>
+<p><strong>¿Cómo se protege la información?</strong> Con backup diario
+con <code>mongodump</code>, retención 7/4/12 y prueba de restauración
+semanal (<code>docs/03_politica_resguardo.md</code>), más roles y
+usuarios con mínimo privilegio (script 05).</p>
+</body></html>

@@ -87,6 +87,38 @@ app.get("/api/productos", ruta(async (req, res) => {
   res.json(r);
 }));
 
+// Portada: bloques de la colección pagina_inicio activos y vigentes, en orden.
+// Los productos se completan con precio, rating y stock al día ($lookup).
+app.get("/api/inicio", ruta(async (req, res) => {
+  const ahora = new Date();
+  const bloques = await db.collection("pagina_inicio").find({
+    activo: true,
+    $and: [
+      { $or: [{ "vigencia.desde": { $exists: false } }, { "vigencia.desde": { $lte: ahora } }] },
+      { $or: [{ "vigencia.hasta": { $exists: false } }, { "vigencia.hasta": { $gte: ahora } }] }
+    ]
+  }).sort({ orden: 1 }).toArray();
+  if (!bloques.length) return res.json([]);
+
+  const ids = bloques.flatMap((b) => (b.productos || []).map((p) => p.productoId));
+  const tarjetas = await db.collection("productos").aggregate([
+    { $match: { _id: { $in: ids }, activo: true } }, { $project: PROYECCION_TARJETA }
+  ]).toArray();
+  const porId = Object.fromEntries(tarjetas.map((t) => [String(t._id), t]));
+  const codigos = bloques.filter((b) => b.tipo === "promociones").flatMap((b) => b.items.map((i) => i.codigo));
+  const promos = Object.fromEntries((await db.collection("promociones").find({ codigo: { $in: codigos } }).toArray()).map((p) => [p.codigo, p]));
+
+  for (const b of bloques) {
+    if (b.productos) b.productos = b.productos.map((p) => porId[String(p.productoId)] && { ...porId[String(p.productoId)], etiqueta: p.etiqueta }).filter(Boolean);
+    if (b.tipo === "banner_principal") b.slides = b.slides.filter((s) => !s.vigencia || (s.vigencia.desde <= ahora && s.vigencia.hasta >= ahora));
+    if (b.tipo === "promociones") b.items = b.items.filter((i) => promos[i.codigo]).map((i) => {
+      const v = promos[i.codigo].vigencia;
+      return { ...i, estado: ahora < v.desde ? "proximamente" : ahora > v.hasta ? "vencida" : "vigente", desde: v.desde, hasta: v.hasta };
+    }).filter((i) => i.estado !== "vencida");
+  }
+  res.json(bloques);
+}));
+
 // Más vendidos de los últimos 90 días (para la portada)
 app.get("/api/destacados", ruta(async (req, res) => {
   const desde = new Date(Date.now() - 90 * 86400000);

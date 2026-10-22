@@ -1,0 +1,1429 @@
+{
+  "base": "mparfum",
+  "fecha": {
+    "$date": {
+      "$numberLong": "1792600329411"
+    }
+  },
+  "servidor": "9.0.2",
+  "colecciones": [
+    {
+      "nombre": "clientes",
+      "tipo": "collection",
+      "documentos": {
+        "$numberInt": "2000"
+      },
+      "opciones": {
+        "validator": {
+          "$jsonSchema": {
+            "bsonType": "object",
+            "required": [
+              "nombre",
+              "apellido",
+              "email",
+              "fechaRegistro"
+            ],
+            "properties": {
+              "nombre": {
+                "bsonType": "string"
+              },
+              "apellido": {
+                "bsonType": "string"
+              },
+              "email": {
+                "bsonType": "string",
+                "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+              },
+              "dni": {
+                "bsonType": "string",
+                "pattern": "^[0-9]{7,8}$"
+              },
+              "telefono": {
+                "bsonType": "string"
+              },
+              "fechaNacimiento": {
+                "bsonType": "date"
+              },
+              "direcciones": {
+                "bsonType": "array",
+                "maxItems": {
+                  "$numberInt": "5"
+                },
+                "items": {
+                  "bsonType": "object",
+                  "required": [
+                    "calle",
+                    "ciudad",
+                    "provincia"
+                  ],
+                  "properties": {
+                    "alias": {
+                      "bsonType": "string"
+                    },
+                    "calle": {
+                      "bsonType": "string"
+                    },
+                    "ciudad": {
+                      "bsonType": "string"
+                    },
+                    "provincia": {
+                      "bsonType": "string"
+                    },
+                    "cp": {
+                      "bsonType": "string"
+                    },
+                    "principal": {
+                      "bsonType": "bool"
+                    }
+                  }
+                }
+              },
+              "preferencias": {
+                "bsonType": "object"
+              },
+              "favoritos": {
+                "bsonType": "array",
+                "items": {
+                  "bsonType": "objectId"
+                },
+                "description": "lista de deseos"
+              },
+              "club": {
+                "bsonType": "object",
+                "properties": {
+                  "nivel": {
+                    "enum": [
+                      "classic",
+                      "gold",
+                      "black"
+                    ]
+                  },
+                  "puntos": {
+                    "bsonType": "int",
+                    "minimum": {
+                      "$numberInt": "0"
+                    }
+                  }
+                }
+              },
+              "fechaRegistro": {
+                "bsonType": "date"
+              }
+            }
+          }
+        }
+      },
+      "indices": [
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "email": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "ux_email",
+          "unique": true,
+          "collation": {
+            "locale": "simple"
+          }
+        },
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "dni": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "ux_dni",
+          "unique": true,
+          "sparse": true,
+          "collation": {
+            "locale": "simple"
+          }
+        },
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "direcciones.provincia": {
+              "$numberInt": "1"
+            },
+            "club.nivel": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "ix_provincia_nivel",
+          "collation": {
+            "locale": "simple"
+          }
+        },
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "favoritos": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "ix_favoritos",
+          "collation": {
+            "locale": "simple"
+          }
+        }
+      ]
+    },
+    {
+      "nombre": "reseñas",
+      "tipo": "collection",
+      "documentos": {
+        "$numberInt": "3833"
+      },
+      "opciones": {
+        "validator": {
+          "$jsonSchema": {
+            "bsonType": "object",
+            "required": [
+              "productoId",
+              "clienteId",
+              "puntaje",
+              "fecha"
+            ],
+            "properties": {
+              "productoId": {
+                "bsonType": "objectId"
+              },
+              "clienteId": {
+                "bsonType": "objectId"
+              },
+              "puntaje": {
+                "bsonType": "int",
+                "minimum": {
+                  "$numberInt": "1"
+                },
+                "maximum": {
+                  "$numberInt": "5"
+                }
+              },
+              "titulo": {
+                "bsonType": "string",
+                "maxLength": {
+                  "$numberInt": "100"
+                }
+              },
+              "comentario": {
+                "bsonType": "string",
+                "maxLength": {
+                  "$numberInt": "2000"
+                }
+              },
+              "compraVerificada": {
+                "bsonType": "bool"
+              },
+              "fecha": {
+                "bsonType": "date"
+              }
+            }
+          }
+        }
+      },
+      "indices": [
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "productoId": {
+              "$numberInt": "1"
+            },
+            "fecha": {
+              "$numberInt": "-1"
+            }
+          },
+          "name": "ix_producto_fecha",
+          "collation": {
+            "locale": "simple"
+          }
+        },
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "clienteId": {
+              "$numberInt": "1"
+            },
+            "productoId": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "ux_cliente_producto",
+          "unique": true,
+          "collation": {
+            "locale": "simple"
+          }
+        }
+      ]
+    },
+    {
+      "nombre": "promociones",
+      "tipo": "collection",
+      "documentos": {
+        "$numberInt": "6"
+      },
+      "opciones": {
+        "validator": {
+          "$jsonSchema": {
+            "bsonType": "object",
+            "required": [
+              "codigo",
+              "tipo",
+              "valor",
+              "vigencia"
+            ],
+            "properties": {
+              "codigo": {
+                "bsonType": "string"
+              },
+              "descripcion": {
+                "bsonType": "string"
+              },
+              "tipo": {
+                "enum": [
+                  "porcentaje",
+                  "monto_fijo",
+                  "2x1",
+                  "cuotas_sin_interes"
+                ]
+              },
+              "valor": {
+                "bsonType": [
+                  "int",
+                  "double"
+                ]
+              },
+              "vigencia": {
+                "bsonType": "object",
+                "required": [
+                  "desde",
+                  "hasta"
+                ],
+                "properties": {
+                  "desde": {
+                    "bsonType": "date"
+                  },
+                  "hasta": {
+                    "bsonType": "date"
+                  }
+                }
+              },
+              "aplicaA": {
+                "bsonType": "object"
+              },
+              "medioPago": {
+                "bsonType": "string"
+              }
+            }
+          }
+        }
+      },
+      "indices": [
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "codigo": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "ux_codigo",
+          "unique": true,
+          "collation": {
+            "locale": "simple"
+          }
+        },
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "vigencia.desde": {
+              "$numberInt": "1"
+            },
+            "vigencia.hasta": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "ix_vigencia",
+          "collation": {
+            "locale": "simple"
+          }
+        }
+      ]
+    },
+    {
+      "nombre": "depositos",
+      "tipo": "collection",
+      "documentos": {
+        "$numberInt": "9"
+      },
+      "opciones": {
+        "validator": {
+          "$jsonSchema": {
+            "bsonType": "object",
+            "required": [
+              "_id",
+              "nombre",
+              "tipo",
+              "direccion",
+              "ubicacion"
+            ],
+            "properties": {
+              "_id": {
+                "bsonType": "string"
+              },
+              "nombre": {
+                "bsonType": "string"
+              },
+              "tipo": {
+                "enum": [
+                  "deposito",
+                  "punto_retiro"
+                ]
+              },
+              "direccion": {
+                "bsonType": "object",
+                "required": [
+                  "calle",
+                  "ciudad",
+                  "provincia"
+                ],
+                "properties": {
+                  "calle": {
+                    "bsonType": "string"
+                  },
+                  "ciudad": {
+                    "bsonType": "string"
+                  },
+                  "provincia": {
+                    "bsonType": "string"
+                  }
+                }
+              },
+              "ubicacion": {
+                "bsonType": "object",
+                "required": [
+                  "type",
+                  "coordinates"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "Point"
+                    ]
+                  },
+                  "coordinates": {
+                    "bsonType": "array",
+                    "minItems": {
+                      "$numberInt": "2"
+                    },
+                    "maxItems": {
+                      "$numberInt": "2"
+                    },
+                    "items": {
+                      "bsonType": "double"
+                    }
+                  }
+                }
+              },
+              "provinciasQueAbastece": {
+                "bsonType": "array",
+                "items": {
+                  "bsonType": "string"
+                }
+              },
+              "horario": {
+                "bsonType": "string"
+              }
+            }
+          }
+        }
+      },
+      "indices": [
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "ubicacion": "2dsphere"
+          },
+          "name": "geo_ubicacion",
+          "2dsphereIndexVersion": {
+            "$numberInt": "4"
+          },
+          "collation": {
+            "locale": "simple"
+          }
+        }
+      ]
+    },
+    {
+      "nombre": "marcas",
+      "tipo": "collection",
+      "documentos": {
+        "$numberInt": "27"
+      },
+      "opciones": {
+        "validator": {
+          "$jsonSchema": {
+            "bsonType": "object",
+            "required": [
+              "_id",
+              "nombre",
+              "paisOrigen",
+              "rubros",
+              "activa"
+            ],
+            "properties": {
+              "_id": {
+                "bsonType": "string",
+                "description": "slug de la marca, ej: 'chanel'"
+              },
+              "nombre": {
+                "bsonType": "string"
+              },
+              "paisOrigen": {
+                "bsonType": "string"
+              },
+              "rubros": {
+                "bsonType": "array",
+                "minItems": {
+                  "$numberInt": "1"
+                },
+                "items": {
+                  "enum": [
+                    "fragancias",
+                    "maquillaje",
+                    "tratamiento",
+                    "cuerpo",
+                    "cabello"
+                  ]
+                }
+              },
+              "grupo": {
+                "bsonType": "string",
+                "description": "grupo empresario (LVMH, L'Oréal, ...)"
+              },
+              "activa": {
+                "bsonType": "bool"
+              }
+            }
+          }
+        }
+      },
+      "indices": []
+    },
+    {
+      "nombre": "carritos",
+      "tipo": "collection",
+      "documentos": {
+        "$numberInt": "300"
+      },
+      "opciones": {},
+      "indices": [
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "actualizado": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "ttl_carritos_30d",
+          "expireAfterSeconds": {
+            "$numberInt": "2592000"
+          },
+          "collation": {
+            "locale": "simple"
+          }
+        },
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "clienteId": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "ix_cliente",
+          "collation": {
+            "locale": "simple"
+          }
+        }
+      ]
+    },
+    {
+      "nombre": "productos",
+      "tipo": "collection",
+      "documentos": {
+        "$numberInt": "50"
+      },
+      "opciones": {
+        "validator": {
+          "$jsonSchema": {
+            "bsonType": "object",
+            "required": [
+              "nombre",
+              "tipo",
+              "marca",
+              "categoria",
+              "variantes",
+              "activo"
+            ],
+            "properties": {
+              "nombre": {
+                "bsonType": "string",
+                "minLength": {
+                  "$numberInt": "1"
+                }
+              },
+              "tipo": {
+                "enum": [
+                  "fragancia",
+                  "maquillaje",
+                  "tratamiento",
+                  "cuerpo",
+                  "cabello",
+                  "set"
+                ]
+              },
+              "genero": {
+                "enum": [
+                  "mujer",
+                  "hombre",
+                  "unisex"
+                ]
+              },
+              "marca": {
+                "bsonType": "object",
+                "required": [
+                  "_id",
+                  "nombre"
+                ],
+                "properties": {
+                  "_id": {
+                    "bsonType": "string"
+                  },
+                  "nombre": {
+                    "bsonType": "string"
+                  }
+                }
+              },
+              "categoria": {
+                "bsonType": "object",
+                "required": [
+                  "_id",
+                  "ruta"
+                ],
+                "properties": {
+                  "_id": {
+                    "bsonType": "string"
+                  },
+                  "ruta": {
+                    "bsonType": "array"
+                  }
+                }
+              },
+              "descripcion": {
+                "bsonType": "string"
+              },
+              "etiquetas": {
+                "bsonType": "array",
+                "items": {
+                  "bsonType": "string"
+                }
+              },
+              "atributos": {
+                "bsonType": "object"
+              },
+              "variantes": {
+                "bsonType": "array",
+                "minItems": {
+                  "$numberInt": "1"
+                },
+                "items": {
+                  "bsonType": "object",
+                  "required": [
+                    "sku",
+                    "presentacion",
+                    "precio",
+                    "stock"
+                  ],
+                  "properties": {
+                    "sku": {
+                      "bsonType": "string"
+                    },
+                    "presentacion": {
+                      "bsonType": "string"
+                    },
+                    "contenido": {
+                      "bsonType": "object",
+                      "properties": {
+                        "valor": {
+                          "bsonType": [
+                            "int",
+                            "double"
+                          ]
+                        },
+                        "unidad": {
+                          "enum": [
+                            "ml",
+                            "g",
+                            "u"
+                          ]
+                        }
+                      }
+                    },
+                    "tono": {
+                      "bsonType": "string"
+                    },
+                    "precio": {
+                      "bsonType": [
+                        "int",
+                        "double",
+                        "decimal"
+                      ],
+                      "minimum": {
+                        "$numberInt": "0"
+                      }
+                    },
+                    "precioLista": {
+                      "bsonType": [
+                        "int",
+                        "double",
+                        "decimal"
+                      ],
+                      "minimum": {
+                        "$numberInt": "0"
+                      }
+                    },
+                    "stock": {
+                      "bsonType": "array",
+                      "items": {
+                        "bsonType": "object",
+                        "required": [
+                          "deposito",
+                          "cantidad"
+                        ],
+                        "properties": {
+                          "deposito": {
+                            "bsonType": "string"
+                          },
+                          "cantidad": {
+                            "bsonType": "int",
+                            "minimum": {
+                              "$numberInt": "0"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "rating": {
+                "bsonType": "object",
+                "properties": {
+                  "promedio": {
+                    "bsonType": [
+                      "double",
+                      "int"
+                    ],
+                    "minimum": {
+                      "$numberInt": "0"
+                    },
+                    "maximum": {
+                      "$numberInt": "5"
+                    }
+                  },
+                  "cantidad": {
+                    "bsonType": "int",
+                    "minimum": {
+                      "$numberInt": "0"
+                    }
+                  }
+                }
+              },
+              "activo": {
+                "bsonType": "bool"
+              },
+              "fechaAlta": {
+                "bsonType": "date"
+              }
+            }
+          }
+        },
+        "validationLevel": "strict",
+        "validationAction": "error"
+      },
+      "indices": [
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "variantes.sku": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "ux_sku",
+          "unique": true,
+          "collation": {
+            "locale": "simple"
+          }
+        },
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "tipo": {
+              "$numberInt": "1"
+            },
+            "genero": {
+              "$numberInt": "1"
+            },
+            "variantes.precio": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "ix_tipo_genero_precio",
+          "collation": {
+            "locale": "simple"
+          }
+        },
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "categoria.ruta": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "ix_categoria_ruta",
+          "collation": {
+            "locale": "simple"
+          }
+        },
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "marca._id": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "ix_marca",
+          "collation": {
+            "locale": "simple"
+          }
+        },
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "_fts": "text",
+            "_ftsx": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "tx_buscador",
+          "weights": {
+            "atributos.notas.corazon": {
+              "$numberInt": "1"
+            },
+            "atributos.notas.fondo": {
+              "$numberInt": "1"
+            },
+            "atributos.notas.salida": {
+              "$numberInt": "1"
+            },
+            "descripcion": {
+              "$numberInt": "1"
+            },
+            "etiquetas": {
+              "$numberInt": "5"
+            },
+            "marca.nombre": {
+              "$numberInt": "8"
+            },
+            "nombre": {
+              "$numberInt": "10"
+            }
+          },
+          "default_language": "spanish",
+          "language_override": "language",
+          "textIndexVersion": {
+            "$numberInt": "3"
+          },
+          "collation": {
+            "locale": "simple"
+          }
+        },
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "rating.promedio": {
+              "$numberInt": "-1"
+            }
+          },
+          "name": "ix_rating_activos",
+          "partialFilterExpression": {
+            "activo": true
+          },
+          "collation": {
+            "locale": "simple"
+          }
+        }
+      ]
+    },
+    {
+      "nombre": "pedidos",
+      "tipo": "collection",
+      "documentos": {
+        "$numberInt": "20000"
+      },
+      "opciones": {
+        "validator": {
+          "$jsonSchema": {
+            "bsonType": "object",
+            "required": [
+              "numero",
+              "cliente",
+              "fecha",
+              "canal",
+              "items",
+              "total",
+              "estado"
+            ],
+            "properties": {
+              "numero": {
+                "bsonType": "int"
+              },
+              "cliente": {
+                "bsonType": "object",
+                "required": [
+                  "_id",
+                  "email"
+                ],
+                "properties": {
+                  "_id": {
+                    "bsonType": "objectId"
+                  },
+                  "email": {
+                    "bsonType": "string"
+                  }
+                }
+              },
+              "fecha": {
+                "bsonType": "date"
+              },
+              "canal": {
+                "enum": [
+                  "web",
+                  "app"
+                ]
+              },
+              "deposito": {
+                "bsonType": "string",
+                "description": "depósito que despacha el pedido"
+              },
+              "items": {
+                "bsonType": "array",
+                "minItems": {
+                  "$numberInt": "1"
+                },
+                "items": {
+                  "bsonType": "object",
+                  "required": [
+                    "productoId",
+                    "sku",
+                    "nombre",
+                    "cantidad",
+                    "precioUnitario"
+                  ],
+                  "properties": {
+                    "productoId": {
+                      "bsonType": "objectId"
+                    },
+                    "sku": {
+                      "bsonType": "string"
+                    },
+                    "nombre": {
+                      "bsonType": "string"
+                    },
+                    "marca": {
+                      "bsonType": "string"
+                    },
+                    "tipo": {
+                      "bsonType": "string"
+                    },
+                    "cantidad": {
+                      "bsonType": "int",
+                      "minimum": {
+                        "$numberInt": "1"
+                      }
+                    },
+                    "precioUnitario": {
+                      "bsonType": [
+                        "int",
+                        "double",
+                        "decimal"
+                      ],
+                      "minimum": {
+                        "$numberInt": "0"
+                      }
+                    }
+                  }
+                }
+              },
+              "subtotal": {
+                "bsonType": [
+                  "int",
+                  "double",
+                  "decimal"
+                ]
+              },
+              "descuento": {
+                "bsonType": [
+                  "int",
+                  "double",
+                  "decimal"
+                ]
+              },
+              "total": {
+                "bsonType": [
+                  "int",
+                  "double",
+                  "decimal"
+                ],
+                "minimum": {
+                  "$numberInt": "0"
+                }
+              },
+              "pago": {
+                "bsonType": "object",
+                "properties": {
+                  "medio": {
+                    "enum": [
+                      "credito",
+                      "debito",
+                      "mercadopago",
+                      "transferencia"
+                    ]
+                  },
+                  "cuotas": {
+                    "bsonType": "int",
+                    "minimum": {
+                      "$numberInt": "1"
+                    },
+                    "maximum": {
+                      "$numberInt": "12"
+                    }
+                  }
+                }
+              },
+              "envio": {
+                "bsonType": "object",
+                "required": [
+                  "tipo",
+                  "costo"
+                ],
+                "properties": {
+                  "tipo": {
+                    "enum": [
+                      "domicilio",
+                      "retiro"
+                    ]
+                  },
+                  "costo": {
+                    "bsonType": [
+                      "int",
+                      "double"
+                    ],
+                    "minimum": {
+                      "$numberInt": "0"
+                    }
+                  },
+                  "puntoRetiro": {
+                    "bsonType": "string"
+                  },
+                  "empresa": {
+                    "bsonType": "string"
+                  },
+                  "tracking": {
+                    "bsonType": "string"
+                  },
+                  "direccion": {
+                    "bsonType": "object"
+                  }
+                }
+              },
+              "estado": {
+                "enum": [
+                  "pendiente",
+                  "pagado",
+                  "preparando",
+                  "enviado",
+                  "entregado",
+                  "cancelado"
+                ]
+              },
+              "historialEstados": {
+                "bsonType": "array"
+              },
+              "promocion": {
+                "bsonType": "string"
+              }
+            }
+          }
+        }
+      },
+      "indices": [
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "numero": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "ux_numero",
+          "unique": true,
+          "collation": {
+            "locale": "simple"
+          }
+        },
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "cliente._id": {
+              "$numberInt": "1"
+            },
+            "fecha": {
+              "$numberInt": "-1"
+            }
+          },
+          "name": "ix_cliente_fecha",
+          "collation": {
+            "locale": "simple"
+          }
+        },
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "fecha": {
+              "$numberInt": "1"
+            },
+            "estado": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "ix_fecha_estado",
+          "collation": {
+            "locale": "simple"
+          }
+        },
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "estado": {
+              "$numberInt": "1"
+            },
+            "deposito": {
+              "$numberInt": "1"
+            },
+            "fecha": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "ix_estado_deposito_fecha",
+          "collation": {
+            "locale": "simple"
+          }
+        },
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "envio.tracking": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "ux_tracking",
+          "unique": true,
+          "partialFilterExpression": {
+            "envio.tracking": {
+              "$exists": true
+            }
+          },
+          "collation": {
+            "locale": "simple"
+          }
+        },
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "items.productoId": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "ix_items_producto",
+          "collation": {
+            "locale": "simple"
+          }
+        }
+      ]
+    },
+    {
+      "nombre": "categorias",
+      "tipo": "collection",
+      "documentos": {
+        "$numberInt": "26"
+      },
+      "opciones": {
+        "validator": {
+          "$jsonSchema": {
+            "bsonType": "object",
+            "required": [
+              "_id",
+              "nombre",
+              "nivel",
+              "ruta"
+            ],
+            "properties": {
+              "_id": {
+                "bsonType": "string"
+              },
+              "nombre": {
+                "bsonType": "string"
+              },
+              "padre": {
+                "bsonType": [
+                  "string",
+                  "null"
+                ]
+              },
+              "ruta": {
+                "bsonType": "array",
+                "items": {
+                  "bsonType": "string"
+                }
+              },
+              "nivel": {
+                "bsonType": "int",
+                "minimum": {
+                  "$numberInt": "1"
+                },
+                "maximum": {
+                  "$numberInt": "3"
+                }
+              },
+              "orden": {
+                "bsonType": "int"
+              }
+            }
+          }
+        }
+      },
+      "indices": [
+        {
+          "v": {
+            "$numberInt": "2"
+          },
+          "key": {
+            "padre": {
+              "$numberInt": "1"
+            },
+            "orden": {
+              "$numberInt": "1"
+            }
+          },
+          "name": "ix_padre_orden",
+          "collation": {
+            "locale": "simple"
+          }
+        }
+      ]
+    }
+  ],
+  "vistas": [
+    {
+      "nombre": "v_catalogo_publico",
+      "viewOn": "productos",
+      "pipeline": [
+        {
+          "$match": {
+            "activo": true
+          }
+        },
+        {
+          "$project": {
+            "nombre": {
+              "$numberInt": "1"
+            },
+            "tipo": {
+              "$numberInt": "1"
+            },
+            "genero": {
+              "$numberInt": "1"
+            },
+            "marca": "$marca.nombre",
+            "categoria": "$categoria._id",
+            "descripcion": {
+              "$numberInt": "1"
+            },
+            "atributos": {
+              "$numberInt": "1"
+            },
+            "rating": {
+              "$numberInt": "1"
+            },
+            "variantes": {
+              "$map": {
+                "input": "$variantes",
+                "in": {
+                  "sku": "$$this.sku",
+                  "presentacion": "$$this.presentacion",
+                  "tono": "$$this.tono",
+                  "precio": "$$this.precio",
+                  "disponible": {
+                    "$gt": [
+                      {
+                        "$sum": "$$this.stock.cantidad"
+                      },
+                      {
+                        "$numberInt": "0"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "nombre": "v_ventas_diarias",
+      "viewOn": "pedidos",
+      "pipeline": [
+        {
+          "$match": {
+            "estado": {
+              "$ne": "cancelado"
+            }
+          }
+        },
+        {
+          "$group": {
+            "_id": {
+              "dia": {
+                "$dateToString": {
+                  "format": "%Y-%m-%d",
+                  "date": "$fecha",
+                  "timezone": "America/Argentina/Mendoza"
+                }
+              },
+              "canal": "$canal",
+              "deposito": "$deposito"
+            },
+            "pedidos": {
+              "$sum": {
+                "$numberInt": "1"
+              }
+            },
+            "facturacion": {
+              "$sum": "$total"
+            },
+            "descuentos": {
+              "$sum": "$descuento"
+            }
+          }
+        },
+        {
+          "$project": {
+            "_id": {
+              "$numberInt": "0"
+            },
+            "dia": "$_id.dia",
+            "canal": "$_id.canal",
+            "deposito": "$_id.deposito",
+            "pedidos": {
+              "$numberInt": "1"
+            },
+            "facturacion": {
+              "$numberInt": "1"
+            },
+            "descuentos": {
+              "$numberInt": "1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "nombre": "v_stock_por_deposito",
+      "viewOn": "productos",
+      "pipeline": [
+        {
+          "$match": {
+            "activo": true
+          }
+        },
+        {
+          "$unwind": "$variantes"
+        },
+        {
+          "$unwind": "$variantes.stock"
+        },
+        {
+          "$project": {
+            "_id": {
+              "$numberInt": "0"
+            },
+            "deposito": "$variantes.stock.deposito",
+            "sku": "$variantes.sku",
+            "producto": "$nombre",
+            "marca": "$marca.nombre",
+            "presentacion": "$variantes.presentacion",
+            "cantidad": "$variantes.stock.cantidad"
+          }
+        }
+      ]
+    }
+  ]
+}

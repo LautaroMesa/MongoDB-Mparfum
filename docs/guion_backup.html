@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Guion: backup y restauración - Mparfum</title>
+<style>
+  @page { size: A4; margin: 16mm 15mm 16mm 15mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "DejaVu Sans", Arial, sans-serif; font-size: 10.5pt; line-height: 1.45; color: #1f1823; margin: 0; }
+  h1 { font-size: 20pt; color: #7a2e4f; margin: 0 0 2mm; }
+  .sub { color: #6f6575; font-size: 10pt; margin-bottom: 6mm; border-bottom: 2px solid #7a2e4f; padding-bottom: 3mm; }
+  h2 { font-size: 13pt; color: #7a2e4f; margin: 7mm 0 2.5mm; border-bottom: 1px solid #e4dfea; padding-bottom: 1mm; }
+  h3 { font-size: 11pt; margin: 5mm 0 2mm; }
+  h2, h3 { page-break-after: avoid; break-after: avoid; }
+  h2 + table, h2 + ul { break-before: avoid; }
+  p { margin: 1.5mm 0; }
+  ul { margin: 1.5mm 0; padding-left: 6mm; }
+  li { margin: 1mm 0; }
+  pre { background: #f3eef6; border: 1px solid #e4dfea; border-left: 3px solid #7a2e4f; border-radius: 4px; padding: 2.5mm 3.5mm; margin: 2mm 0; font-family: "DejaVu Sans Mono", Consolas, monospace; font-size: 9pt; white-space: pre-wrap; word-break: break-all; page-break-inside: avoid; }
+  code { font-family: "DejaVu Sans Mono", Consolas, monospace; font-size: 9pt; background: #f3eef6; padding: 0 1mm; border-radius: 2px; }
+  .decir { background: #fbf1dc; border-left: 3px solid #a5803a; padding: 2.5mm 3.5mm; margin: 2mm 0; font-style: italic; page-break-inside: avoid; }
+  .decir::before { content: "Decir: "; font-style: normal; font-weight: bold; color: #7a5a14; }
+  .nota { color: #6f6575; font-size: 9.5pt; }
+  .opcion { font-weight: bold; color: #2f7a52; margin-top: 3mm; }
+  .paso { page-break-inside: avoid; }
+  table { width: 100%; border-collapse: collapse; margin: 2mm 0; font-size: 9.5pt; }
+  th, td { border: 1px solid #e4dfea; padding: 2mm 2.5mm; text-align: left; vertical-align: top; }
+  th { background: #7a2e4f; color: #fff; font-weight: bold; }
+  tr:nth-child(even) td { background: #faf8fb; }
+  tr { page-break-inside: avoid; }
+  .final { margin-top: 6mm; background: #e3f2e9; border: 1px solid #b9dcc6; border-radius: 4px; padding: 3mm 4mm; font-weight: bold; color: #2f7a52; }
+</style>
+</head>
+<body>
+
+<h1>Guion: backup y restauración de la base</h1>
+<div class="sub">Proyecto Mparfum · Diseño de Bases de Datos II · Universidad de Mendoza · 2026<br>Para cuando el profesor pida: <b>"mostrame cómo se hace un backup de tu base de datos"</b>. Duración: unos 3 minutos.</div>
+
+<h2>Antes de la exposición</h2>
+<ul>
+  <li>Tener <b>dos ventanas abiertas</b>: el <b>CMD con mongosh</b> y <b>MongoDB Compass</b>.</li>
+  <li>Abrir mongosh <b>desde la carpeta del proyecto</b>, para que <code>load("backup/...")</code> encuentre los archivos:</li>
+</ul>
+<pre>cd "C:\Users\Lautaro Mesa\OneDrive\Desktop\Base de Datos II\BD 2 PROYECTO\BD 2 PROYECTO"
+mongosh</pre>
+<ul>
+  <li>Dentro de mongosh, dejar seleccionada la base:</li>
+</ul>
+<pre>use mparfum</pre>
+<ul>
+  <li>Si es posible, tener instaladas las <b>MongoDB Database Tools</b> (traen <code>mongodump</code> y <code>mongorestore</code>), para poder mostrar la opción A.</li>
+  <li><b>La consola de Compass no sirve para esto</b>: no permite <code>load()</code> ni <code>require()</code>. Usar siempre el mongosh del CMD.</li>
+</ul>
+
+<h2>Guion paso a paso</h2>
+
+<div class="paso">
+<h3>1. Explicar la política (30 segundos, sin comandos)</h3>
+<p class="decir">Nuestra política es un backup completo diario a las 3 de la mañana, que es la hora de menos tráfico de la tienda. Guardamos los últimos 7 diarios, 4 semanales y 12 mensuales. Una vez por semana restauramos el último backup en una base aparte para comprobar que funciona.</p>
+</div>
+
+<div class="paso">
+<h3>2. Mostrar cuántos datos hay</h3>
+<pre>db.pedidos.countDocuments()</pre>
+<p class="decir">Tenemos 20.000 pedidos.</p>
+</div>
+
+<div class="paso">
+<h3>3. Hacer el backup</h3>
+<p class="opcion">Opción A: con la herramienta oficial, mongodump (requiere las Database Tools)</p>
+<pre>const { execSync } = require("child_process")</pre>
+<pre>execSync('mongodump --db=mparfum --gzip --archive=mparfum_backup.archive.gz', { stdio: "inherit" })</pre>
+<p class="decir">mongodump guarda la base en formato BSON comprimido: los datos, los índices y los validadores.</p>
+<p class="opcion">Opción B: con el script del proyecto (no requiere nada extra)</p>
+<pre>load("backup/backup_mongosh.js")</pre>
+<p class="decir">Este script guarda cada colección con sus documentos, sus índices, el validador y las vistas, comprimido en una carpeta con la fecha.</p>
+<p class="nota">Si hay tiempo, mostrar el archivo o la carpeta del backup en el Explorador de Windows (carpeta <code>resguardos</code>).</p>
+</div>
+
+<div class="paso">
+<h3>4. Simular un desastre</h3>
+<pre>db.pedidos.deleteMany({ canal: "app" })</pre>
+<pre>db.pedidos.countDocuments()</pre>
+<p class="decir">Un empleado borró por error todos los pedidos de la app. Perdimos unos 5.500.</p>
+<p class="nota">Recargar Compass (botón 🔄) para que se vea que bajó la cantidad de pedidos.</p>
+</div>
+
+<div class="paso">
+<h3>5. Restaurar</h3>
+<p class="opcion">Opción A: mongorestore</p>
+<pre>execSync('mongorestore --gzip --archive=mparfum_backup.archive.gz --nsInclude=mparfum.* --drop', { stdio: "inherit" })</pre>
+<p class="opcion">Opción B: script del proyecto</p>
+<pre>var DESTINO = "mparfum"</pre>
+<pre>load("backup/restaurar_mongosh.js")</pre>
+<p class="nota">Si se cerró mongosh entre el backup y la restauración, antes del <code>load</code> indicar la carpeta del backup (con barras <code>/</code>):<br><code>var CARPETA = "C:/Users/Lautaro Mesa/OneDrive/Desktop/Base de Datos II/BD 2 PROYECTO/BD 2 PROYECTO/resguardos/mparfum_AAAA-MM-DD_HHMM"</code></p>
+</div>
+
+<div class="paso">
+<h3>6. Comprobar</h3>
+<pre>db.pedidos.countDocuments()</pre>
+<p class="decir">Volvimos a los 20.000 pedidos.</p>
+<p class="nota">Recargar Compass: se ve que los pedidos volvieron.</p>
+</div>
+
+<div class="paso">
+<h3>Extra: verificar un backup sin tocar la base original</h3>
+<pre>var DESTINO = "mparfum_restore"</pre>
+<pre>load("backup/restaurar_mongosh.js")</pre>
+<pre>load("backup/verificar_restore.js")</pre>
+<p class="nota">Tiene que terminar con "RESGUARDO VERIFICADO". La base <code>mparfum_restore</code> aparece en Compass. Para borrarla: <code>db.getSiblingDB("mparfum_restore").dropDatabase()</code></p>
+</div>
+
+<h2>Preguntas que te pueden hacer</h2>
+<table>
+  <tr><th style="width:34%">Pregunta</th><th>Respuesta</th></tr>
+  <tr><td>¿Qué diferencia hay entre <code>mongodump</code> y <code>mongoexport</code>?</td><td><code>mongodump</code> guarda en BSON con los tipos exactos, más los índices y los validadores: sirve para recuperar la base. <code>mongoexport</code> saca JSON o CSV, sólo datos: sirve para compartir.</td></tr>
+  <tr><td>¿Qué es el RPO y el RTO?</td><td><b>RPO</b>: cuántos datos se pueden perder como máximo; con backup diario, hasta 24 horas. <b>RTO</b>: cuánto tarda la base en volver a funcionar; en nuestro caso, segundos.</td></tr>
+  <tr><td>¿Y si se rompe el disco?</td><td>Por eso aplicamos la regla <b>3-2-1</b>: 3 copias, en 2 medios distintos y 1 fuera del servidor. Un backup en el mismo disco no sirve si se rompe el disco.</td></tr>
+  <tr><td>¿Cómo sabés que el backup sirve?</td><td>Lo restauramos en otra base (<code>mparfum_restore</code>) y lo comparamos colección por colección con <code>verificar_restore.js</code>: documentos, índices y validadores.</td></tr>
+  <tr><td>¿Qué pasa con los pedidos que entran durante el backup?</td><td>Con un replica set se usa <code>--oplog</code>, y el backup queda consistente a un único instante.</td></tr>
+  <tr><td>¿Por qué no usar "Exportar" de Compass?</td><td>Porque exporta sólo los datos, en JSON o CSV: no guarda índices ni validadores, y en CSV se pierden los tipos.</td></tr>
+  <tr><td>¿Cómo se protegen los datos personales del backup?</td><td>Por la Ley 25.326: acceso restringido a la carpeta de backups, cifrado de la copia que sale del servidor y retención limitada (7 / 4 / 12).</td></tr>
+</table>
+
+<h2 style="break-before: page; page-break-before: always;">Si algo falla en el momento</h2>
+<table>
+  <tr><th style="width:42%">Error</th><th>Solución</th></tr>
+  <tr><td><code>load is not currently implemented</code></td><td>Estás en la consola de Compass. Usar el mongosh del CMD.</td></tr>
+  <tr><td><code>ENOENT: no such file or directory</code></td><td>mongosh no se abrió desde la carpeta del proyecto. Salir con <code>exit</code>, hacer <code>cd</code> a la carpeta y volver a abrir <code>mongosh</code>.</td></tr>
+  <tr><td><code>SyntaxError</code> al escribir <code>mongodump</code></td><td><code>mongodump</code> no es un comando de mongosh: usarlo dentro de <code>execSync(...)</code> o directamente en el CMD.</td></tr>
+  <tr><td><code>mongodump</code> no se reconoce</td><td>Faltan las Database Tools: usar la opción B (<code>backup_mongosh.js</code>).</td></tr>
+  <tr><td><code>No encuentro el backup</code></td><td>Definir antes <code>var CARPETA = "..."</code> con la ruta de la carpeta del backup.</td></tr>
+</table>
+
+<div class="final">Practicarlo una vez entero antes de la exposición: que el "desastre" y la recuperación salgan en vivo es lo que más impacta.</div>
+
+</body>
+</html>
